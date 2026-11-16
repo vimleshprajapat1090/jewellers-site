@@ -131,7 +131,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 // Yahan apne Supabase ki 2 cheezein paste karein (Project Settings > API)
-const CONFIG={URL:'PASTE_SUPABASE_URL',KEY:'PASTE_SUPABASE_ANON_KEY'};
+const CONFIG={URL:'https://mkracgssfggupdxdwmtm.supabase.co',KEY:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rcmFjZ3NzZmdndXBkeGR3bXRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4MTEyNDUsImV4cCI6MjExMDM4NzI0NX0.PIYtbsEoOAW5gJ72NkydnXjdVW1IO8rmnQ3IW15cWic'};
 
 const ok=!CONFIG.URL.startsWith('PASTE')&&typeof supabase!=='undefined';
 const sb=ok?supabase.createClient(CONFIG.URL,CONFIG.KEY):null;
