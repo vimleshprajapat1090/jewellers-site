@@ -317,7 +317,7 @@ drawTabs();fillCats();loadCats();loadRates();loadGrid();
 (function(){
   try{
     const base=new URL('./',location.href).href;
-    const m={name:'Shree Tirupati Jawellers',short_name:'Tirupati',start_url:base,scope:base,display:'standalone',lang:'hi',background_color:'#4A1424',theme_color:'#4A1424',icons:[{src:base+'icon-192.png',sizes:'192x192',type:'image/png',purpose:'any'},{src:base+'icon-512.png',sizes:'512x512',type:'image/png',purpose:'any'},{src:base+'icon-512.png',sizes:'512x512',type:'image/png',purpose:'maskable'}]};
+    const m={name:'Shree Tirupati Jawellers',short_name:'Tirupati Jawellers',start_url:base,scope:base,display:'standalone',lang:'hi',background_color:'#4A1424',theme_color:'#4A1424',icons:[{src:base+'icon-192.png',sizes:'192x192',type:'image/png',purpose:'any'},{src:base+'icon-512.png',sizes:'512x512',type:'image/png',purpose:'any'},{src:base+'icon-512.png',sizes:'512x512',type:'image/png',purpose:'maskable'}]};
     const l=document.createElement('link');l.rel='manifest';
     l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));
     document.head.appendChild(l);
