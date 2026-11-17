@@ -333,8 +333,7 @@ $('logout').onclick=async()=>{
   }catch(e){
     $('logoutMsg').textContent='Logout nahi hua. Dobara koshish karein.';
   }finally{
-    b.disabled=false;
-  };
+    b.disabled=false;};
 $('saveRate').onclick=async()=>{
   const g=+$('ig').value,s=+$('is').value;
   if(!g||!s){$('rateMsg').textContent='Dono bhav daalein.';return}
