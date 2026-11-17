@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#4A1424">
+<link rel="icon" href="icon-192.png?v=2">
+<link rel="apple-touch-icon" href="icon-192.png?v=2">
+<title>Shree Tirupati Jawellers</title>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F8F4F1;--surf:#FFFFFF;--ink:#2A1A20;--mute:#7A6A70;--head:#4A1424;--gold:#B8892B;--silv:#8C95A0;--line:#E6DCD6;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#1A1014;--surf:#26171D;--ink:#F3E9E4;--mute:#A99AA0;--line:#3A272E;color-scheme:dark}}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.5 Hind,system-ui,sans-serif}
+header{background:var(--head);color:#F6E7C1;padding:18px 16px 20px}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;max-width:1000px;margin:0 auto}
+h1{font:400 24px/1.1 Marcellus,Georgia,serif;margin:0}
+.adm{background:none;border:1px solid rgba(246,231,193,.6);color:#F6E7C1;border-radius:20px;padding:6px 14px;font:inherit;font-size:14px;cursor:pointer}
+.rates{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:1000px;margin:16px auto 0}
+.rate{border:1px solid rgba(184,137,43,.55);border-radius:10px;padding:10px 14px}
+.rate small{display:block;color:#E3CF9E;font-size:13px}
+.rate b{font:400 26px/1.2 Marcellus,Georgia,serif}
+.rate.s b{color:#D5DADF}.rate.g b{color:#E8C56E}
+.asof{max-width:1000px;margin:8px auto 0;font-size:13px;color:#E3CF9E}
+main{max-width:1000px;margin:0 auto;padding:16px}
+#q{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surf);color:var(--ink);font:inherit;margin-bottom:12px}
+.tabs,.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
+.tabs button{flex:1;padding:12px;border:2px solid var(--line);background:var(--surf);color:var(--ink);border-radius:10px;font:400 18px Marcellus,Georgia,serif;cursor:pointer}
+.tabs button.on.g{border-color:var(--gold);color:var(--gold)}
+.tabs button.on.s{border-color:var(--silv);color:var(--silv)}
+.chips{margin:12px 0}
+.chips button{white-space:nowrap;padding:6px 14px;border:1px solid var(--line);background:var(--surf);color:var(--ink);border-radius:20px;font:inherit;font-size:15px;cursor:pointer}
+.chips button.on{background:var(--head);border-color:var(--head);color:#F6E7C1}
+.count{color:var(--mute);font-size:14px;margin:4px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:640px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer}
+.card{position:relative}
+.card.sel{outline:3px solid var(--gold);outline-offset:-3px}
+.card.sel::after{content:"✓";position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#fff;display:grid;place-items:center;font-weight:600}
+#selbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 12px}
+#selbar[hidden]{display:none}
+#selbar .btn{padding:8px 14px;font-size:14px}
+.pic{aspect-ratio:1;background:linear-gradient(145deg,#F1E4C4,#E3CC93)}
+.silver .pic{background:linear-gradient(145deg,#EEF0F2,#CBD1D7)}
+.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.card p{margin:0;padding:8px 10px 10px;font-size:14px}.card p b{display:block;font-weight:600}.card p span{color:var(--mute);font-size:12px}
+.more{display:none;margin:20px auto;padding:10px 24px;border:1px solid var(--head);background:none;color:var(--ink);border-radius:20px;font:inherit;cursor:pointer}
+#panel{display:none;background:var(--surf);border-bottom:3px solid var(--gold);padding:16px}
+#panel .in{max-width:1000px;margin:0 auto;display:grid;gap:14px}
+#panel h2{font:400 20px Marcellus,Georgia,serif;margin:0}
+#panel label{display:block;font-size:14px;color:var(--mute)}
+#panel input,#panel select{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{padding:10px 18px;border:0;border-radius:8px;background:var(--head);color:#F6E7C1;font:inherit;font-weight:500;cursor:pointer}
+.btn:disabled{opacity:.5}
+.file{position:relative;display:inline-block;overflow:hidden}
+#panel .file input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;padding:0;border:0}
+.msg{font-size:14px;color:var(--gold);min-height:1.3em}
+#lb{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:50;display:flex;flex-direction:column}
+#lb[hidden]{display:none}
+.lbt{display:flex;justify-content:flex-end;gap:10px;padding:10px 14px}
+.lbt button{padding:6px 14px;border:1px solid rgba(255,255,255,.5);border-radius:20px;background:none;color:#fff;font:inherit;cursor:pointer}
+#lbw{flex:1;overflow:auto;display:flex}
+#lbw>*{margin:auto}
+#lbw img{max-width:100%;max-height:78vh;cursor:zoom-in}
+#lbw img.z{max-width:none;max-height:none;width:220%;cursor:zoom-out}
+#lbc{color:#fff;text-align:center;margin:8px 0 14px;font-size:15px}
+.hb{display:flex;gap:8px}
+.heart{position:absolute;top:6px;left:6px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.88);color:#9A1B3C;font-size:20px;line-height:1;cursor:pointer;z-index:2}
+.heart.on{background:#9A1B3C;color:#fff}
+#wl{position:fixed;inset:0;z-index:60;background:var(--bg);color:var(--ink);overflow:auto;padding:12px 16px 40px}
+#wl[hidden]{display:none}
+#wl .lbt button{border-color:var(--line);color:var(--ink)}
+#wl h2,#contact h2{font:400 22px Marcellus,Georgia,serif;margin:6px 0 10px}
+#contact{margin:28px 0 8px;padding:16px;background:var(--surf);border:1px solid var(--line);border-radius:10px}#contactModal{position:fixed;inset:0;z-index:70;background:var(--bg);color:var(--ink);overflow:auto;padding:12px 16px 40px}#contactModal[hidden]{display:none}#contactModal .lbt button{border-color:var(--line);color:var(--ink)}#contactInfo{max-width:700px;margin:8px auto;padding:16px;background:var(--surf);border:1px solid var(--line);border-radius:10px}
+#contact p{margin:6px 0}
+.own{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
+.own b{flex:1 1 170px;font-weight:600}
+.cb{display:inline-block;padding:8px 16px;border-radius:8px;background:var(--head);color:#F6E7C1;text-decoration:none;font-weight:500;font-size:14px}
+.cb.wa{background:#1B8A4B;color:#fff}
+.cb.big{display:block;text-align:center;margin:10px 0;padding:12px;font-size:16px}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<header>
+  <div class="top"><h1>Shree Tirupati Jawellers</h1><div class="hb"><button class="adm" id="contactBtn">Contact</button><button class="adm" id="wlBtn">♡ Pasand (0)</button><button class="adm" id="admBtn">Admin</button></div></div>
+  <div class="rates">
+    <div class="rate g"><small>Gold, 10 gram</small><b id="rg">-</b></div>
+    <div class="rate s"><small>Silver, 1 kg</small><b id="rs">-</b></div>
+  </div>
+  <div class="asof" id="asof"></div>
+</header>
+
+<section id="panel"><div class="in">
+  <div id="login">
+    <h2>Admin login</h2>
+    <div class="row">
+      <label>Email<input id="em" type="email" autocomplete="username"></label>
+      <label>Password<input id="pw" type="password" autocomplete="current-password"></label>
+    </div>
+    <p><button class="btn" id="loginBtn">Login</button> <span class="msg" id="loginMsg"></span></p>
+  </div>
+  <div id="tools" hidden>
+    <h2>Aaj ka bhav update karein</h2>
+    <div class="row">
+      <label>Gold (10 gram, ₹)<input id="ig" inputmode="numeric"></label>
+      <label>Silver (1 kg, ₹)<input id="is" inputmode="numeric"></label>
+    </div>
+    <p><button class="btn" id="saveRate">Bhav save karein</button> <span class="msg" id="rateMsg"></span></p>
+    <h2>Ek saath kai photos upload karein</h2>
+    <div class="row">
+      <label>Metal<select id="um"><option>Gold</option><option>Silver</option></select></label>
+      <label>Category<select id="uc"></select></label>
+    </div>
+    <label>Naya category ka naam (jaise Mangalsutra). Khali chhodein to upar wali category use hogi<input id="nc" placeholder="Naya category"></label>
+    <p><label class="btn file" for="uf">Photos chunein<input id="uf" type="file" accept="image/*" multiple></label> <span class="msg" id="fcount">200-500 photos ek saath chun sakte hain</span></p>
+    <p><button class="btn" id="upBtn">Upload karein</button> <span class="msg" id="upMsg"></span></p>
+    <button class="btn" id="logout">Logout</button> <span class="msg" id="logoutMsg"></span>
+  </div>
+</div></section>
+
+<main>
+  <input id="q" type="search" placeholder="Design ka code likhein (jaise G1001)" aria-label="Design code search">
+  <div class="tabs" id="tabs"></div>
+  <div class="chips" id="chips"></div>
+  <div id="selbar" hidden>
+    <button class="btn" id="selMode">Chunav shuru karein</button>
+    <button class="btn" id="selAll" hidden>Sab chunein</button>
+    <button class="btn" id="selDel" hidden>Hatayein (0)</button>
+    <span class="msg" id="selMsg"></span>
+  </div>
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+  <button class="more" id="more">Aur designs dekhein</button>
+  <section id="contact"></section>
+</main>
+
+<div id="contactModal" hidden role="dialog" aria-modal="true" aria-label="Contact details"><div class="lbt"><button id="contactClose">Band karein</button></div><div id="contactInfo"></div></div>
+
+<div id="lb" hidden>
+  <div class="lbt"><button id="lbh">♡ Pasand karein</button><button id="del" hidden>Ye design hatayein</button><button id="lbx">Band karein</button></div>
+  <div id="lbw"></div>
+  <p id="lbc"></p>
+</div>
+
+<div id="wl" hidden>
+  <div class="lbt"><button id="wlx">Band karein</button></div>
+  <div id="wlb"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+// Supabase ki details (pehle se bhari hui hain)
+const CONFIG={URL:'https://mkracgssfggupdxdwmtm.supabase.co',KEY:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rcmFjZ3NzZmdndXBkeGR3bXRtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4MTEyNDUsImV4cCI6MjExMDM4NzI0NX0.PIYtbsEoOAW5gJ72NkydnXjdVW1IO8rmnQ3IW15cWic'};
+
+const ok=!CONFIG.URL.startsWith('PASTE')&&typeof supabase!=='undefined';
+const sb=ok?supabase.createClient(CONFIG.URL,CONFIG.KEY):null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+const fmt=n=>'₹ '+Number(n||0).toLocaleString('en-IN');
+const pub=(k,code)=>CONFIG.URL+'/storage/v1/object/public/designs/'+k+'/'+code+'.jpg';
+let CATS={Gold:[],Silver:[]},metal='Gold',cat='All',shown=24,q='',admin=false,cur=null,rid=0,tm;
+
+function drawTabs(){
+  $('tabs').innerHTML=['Gold','Silver'].map(m=>'<button class="'+(m===metal?'on ':'')+m[0].toLowerCase()+'" data-m="'+m+'">'+m+'</button>').join('');
+  $('chips').innerHTML=['All',...CATS[metal]].map(c=>'<button class="'+(c===cat?'on':'')+'" data-c="'+esc(c)+'">'+(c==='All'?'Sabhi':esc(c))+'</button>').join('');
+  $('tabs').style.display=$('chips').style.display=q?'none':'';
+}
+async function loadCats(){
+  if(!ok)return;
+  const {data}=await sb.from('categories').select('*');
+  CATS={Gold:[],Silver:[]};
+  (data||[]).forEach(r=>{if(CATS[r.metal])CATS[r.metal].push(r.category)});
+  for(const m in CATS)CATS[m].sort();
+  drawTabs();fillCats();
+}
+async function loadRates(){
+  if(!ok)return;
+  const {data}=await sb.from('rates').select('*').eq('id',1).maybeSingle();
+  if(!data)return;
+  $('rg').textContent=fmt(data.gold);$('rs').textContent=fmt(data.silver);
+  $('asof').textContent=data.updated_at?'Aakhri update: '+new Date(data.updated_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}):'';
+  $('ig').value=data.gold||'';$('is').value=data.silver||'';
+}
+async function loadGrid(){
+  if(!ok){$('count').textContent='Pehle index.html mein Supabase ki details bharein.';return}
+  const id=++rid;
+  let r=sb.from('designs').select('code,name,metal,category',{count:'exact'}).order('id',{ascending:false});
+  if(q)r=r.ilike('code','%'+q+'%');else{r=r.eq('metal',metal);if(cat!=='All')r=r.eq('category',cat)}
+  const {data,count,error}=await r.range(0,shown-1);
+  if(id!==rid)return;
+  if(error){$('count').textContent='Designs load nahi ho paye. Internet check karke dobara koshish karein.';return}
+  $('count').textContent=q&&!count?'Is code ka koi design nahi mila':count+' designs';
+  $('grid').innerHTML=data.map(x=>'<div class="card '+x.metal.toLowerCase()+'" data-code="'+esc(x.code)+'"><button class="heart" data-h="'+esc(x.code)+'" aria-label="Pasand">♡</button><div class="pic"><img loading="lazy" alt="'+esc(x.name||x.code)+'" src="'+pub('thumb',x.code)+'"></div><p><b>'+esc(x.code)+'</b><span>'+esc(x.name||'')+'</span></p></div>').join('');
+  $('more').style.display=count>shown?'block':'none';selUI();heartUI();
+}
+function go(){shown=24;drawTabs();loadGrid()}
+$('tabs').onclick=e=>{const m=e.target.dataset.m;if(m){metal=m;cat='All';go()}};
+$('chips').onclick=e=>{const c=e.target.dataset.c;if(c){cat=c;go()}};
+$('more').onclick=()=>{shown+=24;loadGrid()};
+$('q').oninput=e=>{clearTimeout(tm);tm=setTimeout(()=>{q=e.target.value.trim().replace(/[%_]/g,'');go()},250)};
+
+// Dukaan ki jaankari (pata, samay aur map baad mein yahin bharenge)
+const SHOP={owners:[{name:'Vimlesh Kumar',phone:'8107875003'},{name:'Vikram Singh Prajapat',phone:'8058524091'}],address:'',timing:'',maps:''};
+const wa=(ph,text)=>'https://wa.me/91'+ph+(text?'?text='+encodeURIComponent(text):'');
+function drawContact(){
+  const rows=SHOP.owners.map(x=>'<div class="own"><b>Pro. '+esc(x.name)+'<br><span style="font-weight:400;color:var(--mute)">'+esc(x.phone)+'</span></b><a class="cb" href="tel:+91'+esc(x.phone)+'">Call</a><a class="cb wa" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ke baare mein jaanna hai.')+'">WhatsApp</a></div>').join('');
+  const mapHref=SHOP.maps||(SHOP.address?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(SHOP.address):'');
+  const html='<h2>Hamse sampark karein</h2>'+rows+
+    (SHOP.address?'<p><b>Pata:</b> '+esc(SHOP.address)+'</p>':'')+(SHOP.timing?'<p><b>Samay:</b> '+esc(SHOP.timing)+'</p>':'')+
+    (mapHref?'<p><a class="cb" target="_blank" rel="noopener" href="'+mapHref+'">Map par dekhein</a></p>':'');
+  $('contact').innerHTML=html;
+  $('contactInfo').innerHTML=html;
+}
+$('contactBtn').onclick=()=>{$('contactModal').hidden=false};
+$('contactClose').onclick=()=>{$('contactModal').hidden=true};
+$('contactModal').addEventListener('click',e=>{if(e.target===$('contactModal'))$('contactModal').hidden=true});
+
+
+// Pasand ki list (customer ke phone mein hi save hoti hai)
+let wish=[];try{wish=JSON.parse(localStorage.getItem('stj_wish')||'[]')}catch(e){}
+const saveW=()=>{try{localStorage.setItem('stj_wish',JSON.stringify(wish))}catch(e){}};
+function heartUI(){
+  $('wlBtn').textContent='♡ Pasand ('+wish.length+')';
+  document.querySelectorAll('.heart[data-h]').forEach(h=>{const on=wish.includes(h.dataset.h);h.classList.toggle('on',on);h.textContent=on?'♥':'♡'});
+  $('lbh').textContent=cur&&wish.includes(cur)?'♥ Pasand kiya':'♡ Pasand karein';
+}
+function toggleW(code){const i=wish.indexOf(code);if(i<0)wish.push(code);else wish.splice(i,1);saveW();heartUI()}
+$('lbh').onclick=()=>{if(cur)toggleW(cur)};
+let wlOpen=false;
+function drawWl(){
+  const b=$('wlb');
+  if(!wish.length){b.innerHTML='<h2>Meri pasand ki list</h2><p>Abhi list khali hai. Designs par dil (♡) dabakar yahan jodein.</p>';return}
+  b.innerHTML='<h2>Meri pasand ki list ('+wish.length+')</h2><div class="grid">'+
+    wish.map(c=>'<div class="card"><button class="heart on" data-r="'+esc(c)+'" aria-label="Hatayein">♥</button><div class="pic"><img alt="'+esc(c)+'" src="'+pub('thumb',c)+'"></div><p><b>'+esc(c)+'</b></p></div>').join('')+
+    '</div><p style="margin-top:16px">Neeche button dabakar ye list dukaan ko WhatsApp par bhejein.</p>'+
+    SHOP.owners.map(x=>'<a class="cb wa big" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ki site par ye designs pasand aaye hain:\n'+wish.join(', ')+'\nKripya inki jaankari bhejein.')+'">'+esc(x.name)+' ko WhatsApp par bhejein</a>').join('');
+}
+function openWl(){drawWl();$('wl').hidden=false;if(!wlOpen){try{history.pushState({wl:1},'');wlOpen=true}catch(e){}}}
+function closeWl(){if(wlOpen)history.back();else $('wl').hidden=true}
+window.addEventListener('popstate',()=>{if(wlOpen){wlOpen=false;$('wl').hidden=true}});
+$('wlBtn').onclick=openWl;$('wlx').onclick=closeWl;
+$('wlb').onclick=e=>{const r=e.target.closest('[data-r]');if(r){toggleW(r.dataset.r);drawWl()}};
+
+// Bada photo aur zoom
+let lbOpen=false;
+function openLb(){$('lb').hidden=false;if(!lbOpen){try{history.pushState({lb:1},'');lbOpen=true}catch(e){}}}
+function closeLb(){if(lbOpen)history.back();else $('lb').hidden=true}
+window.addEventListener('popstate',()=>{if(lbOpen){lbOpen=false;$('lb').hidden=true}});
+$('grid').onclick=e=>{
+  const hb=e.target.closest('.heart');if(hb){toggleW(hb.dataset.h);return}
+  const k=e.target.closest('.card');if(!k)return;
+  if(selOn){const c=k.dataset.code;if(sel.has(c))sel.delete(c);else sel.add(c);selUI();return}
+  cur=k.dataset.code;
+  $('lbw').innerHTML='<img alt="'+esc(cur)+'" src="'+pub('full',cur)+'">';
+  $('lbc').textContent=cur+' (zoom ke liye photo par tap karein)';
+  $('del').hidden=!admin;heartUI();openLb();
+};
+$('lbw').onclick=e=>{if(e.target.tagName==='IMG')e.target.classList.toggle('z')};
+$('lbx').onclick=closeLb;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&lbOpen)closeLb()});
+$('del').onclick=async()=>{
+  if(!cur||!confirm(cur+' hamesha ke liye hata dein?'))return;
+  await sb.storage.from('designs').remove(['full/'+cur+'.jpg','thumb/'+cur+'.jpg']);
+  const {error}=await sb.from('designs').delete().eq('code',cur);
+  if(error){alert('Hata nahi paye. Dobara koshish karein.');return}
+  closeLb();await loadCats();loadGrid();
+};
+
+// Ek saath kai designs chunna aur hatana
+let selOn=false;const sel=new Set();
+function selUI(){
+  $('selbar').hidden=!admin;
+  $('selMode').textContent=selOn?'Chunav band karein':'Chunav shuru karein';
+  $('selAll').hidden=$('selDel').hidden=!selOn;
+  $('selDel').textContent='Hatayein ('+sel.size+')';
+  document.querySelectorAll('.card').forEach(k=>k.classList.toggle('sel',sel.has(k.dataset.code)));
+}
+$('selMode').onclick=()=>{selOn=!selOn;if(!selOn){sel.clear();$('selMsg').textContent=''}selUI()};
+$('selAll').onclick=async()=>{
+  $('selMsg').textContent='Chun rahe hain...';
+  let from=0;
+  while(true){
+    let r=sb.from('designs').select('code').order('id');
+    if(q)r=r.ilike('code','%'+q+'%');else{r=r.eq('metal',metal);if(cat!=='All')r=r.eq('category',cat)}
+    const {data,error}=await r.range(from,from+999);
+    if(error||!data.length)break;
+    data.forEach(x=>sel.add(x.code));
+    if(data.length<1000)break;from+=1000;
+  }
+  $('selMsg').textContent=sel.size+' designs chune gaye.';selUI();
+};
+$('selDel').onclick=async()=>{
+  const codes=[...sel];if(!codes.length)return;
+  if(!confirm(codes.length+' designs hamesha ke liye hata dein? Ye wapas nahi aayenge.'))return;
+  $('selDel').disabled=true;let bad=0;
+  for(let i=0;i<codes.length;i+=50){
+    const ch=codes.slice(i,i+50);
+    $('selMsg').textContent='Hata rahe hain: '+Math.min(i+50,codes.length)+' / '+codes.length;
+    const {error}=await sb.from('designs').delete().in('code',ch);
+    if(error){bad+=ch.length;continue}
+    await sb.storage.from('designs').remove(ch.flatMap(c=>['full/'+c+'.jpg','thumb/'+c+'.jpg']));
+    ch.forEach(c=>sel.delete(c));
+  }
+  $('selDel').disabled=false;
+  $('selMsg').textContent=bad?bad+' designs nahi hat paye, dobara koshish karein.':'Hata diye gaye.';
+  await loadCats();if(cat!=='All'&&!CATS[metal].includes(cat))cat='All';go();
+};
+
+// Admin
+function fillCats(){$('uc').innerHTML=CATS[$('um').value].map(c=>'<option>'+esc(c)+'</option>').join('')}
+$('um').onchange=fillCats;
+$('uf').onchange=()=>{const n=$('uf').files.length;$('fcount').textContent=n?n+' photos chuni gayi':'Koi photo nahi chuni'};
+$('admBtn').onclick=()=>{const p=$('panel');p.style.display=p.style.display==='block'?'none':'block'};
+function setAdmin(on){admin=on;if(!on){selOn=false;sel.clear()}$('login').hidden=on;$('tools').hidden=!on;selUI()}
+$('loginBtn').onclick=async()=>{
+  if(!ok){$('loginMsg').textContent='Pehle Supabase ki details bharein.';return}
+  const {error}=await sb.auth.signInWithPassword({email:$('em').value.trim(),password:$('pw').value});
+  $('loginMsg').textContent=error?'Email ya password galat hai.':'';
+  if(!error)$('pw').value='';
+};
+$('logout').onclick=async()=>{
+  const b=$('logout');b.disabled=true;$('logoutMsg').textContent='Logout ho raha hai...';
+  try{
+    const {error}=await sb.auth.signOut({scope:'local'});
+    if(error)throw error;
+    setAdmin(false);
+    $('panel').style.display='none';
+    $('em').value='';$('pw').value='';
+    $('logoutMsg').textContent='Logout ho gaya.';
+  }catch(e){
+    $('logoutMsg').textContent='Logout nahi hua. Internet check karke dobara koshish karein.';
+  }finally{b.disabled=false}
+};
+$('saveRate').onclick=async()=>{
+  const g=+$('ig').value,s=+$('is').value;
+  if(!g||!s){$('rateMsg').textContent='Dono bhav daalein.';return}
+  const {error}=await sb.from('rates').upsert({id:1,gold:g,silver:s,updated_at:new Date().toISOString()});
+  $('rateMsg').textContent=error?'Save nahi hua. Login dobara karein.':'Bhav save ho gaya.';
+  if(!error)loadRates();
+};
+
+async function shrink(f,max,qual){
+  const bmp=await createImageBitmap(f);
+  const k=Math.min(1,max/Math.max(bmp.width,bmp.height));
+  const cv=document.createElement('canvas');cv.width=Math.round(bmp.width*k);cv.height=Math.round(bmp.height*k);
+  cv.getContext('2d').drawImage(bmp,0,0,cv.width,cv.height);if(bmp.close)bmp.close();
+  const b=await new Promise(r=>cv.toBlob(r,'image/jpeg',qual));
+  if(!b)throw new Error('compress');return b;
+}
+$('upBtn').onclick=async()=>{
+  const files=[...$('uf').files];
+  if(!files.length){$('upMsg').textContent='Pehle photos chunein.';return}
+  const m=$('um').value;let c=$('nc').value.trim()||$('uc').value;
+  if(!c){$('upMsg').textContent='Category chunein ya naya naam likhein.';return}
+  const ex=CATS[m].find(x=>x.toLowerCase()===c.toLowerCase());if(ex)c=ex;
+  $('upBtn').disabled=true;
+  let i=0,done=0,bad=0;
+  const worker=async()=>{
+    while(i<files.length){
+      const f=files[i++];let code=null;
+      try{
+        const {data,error}=await sb.from('designs').insert({metal:m,category:c,name:c+' design'}).select('code').single();
+        if(error)throw error;
+        code=data.code;
+        const [full,th]=await Promise.all([shrink(f,1400,.8),shrink(f,400,.75)]);
+        const a=await sb.storage.from('designs').upload('full/'+code+'.jpg',full,{contentType:'image/jpeg'});
+        const b=await sb.storage.from('designs').upload('thumb/'+code+'.jpg',th,{contentType:'image/jpeg'});
+        if(a.error||b.error)throw new Error('upload');
+      }catch(e){
+        bad++;
+        if(code){await sb.storage.from('designs').remove(['full/'+code+'.jpg','thumb/'+code+'.jpg']);await sb.from('designs').delete().eq('code',code)}
+      }
+      done++;$('upMsg').textContent='Upload ho raha hai: '+done+' / '+files.length+'. Page band na karein.';
+    }
+  };
+  await Promise.all([worker(),worker(),worker()]);
+  $('upBtn').disabled=false;
+  $('upMsg').textContent=(files.length-bad)+' photos '+m+' / '+c+' mein jod di gayi.'+(bad?' '+bad+' photos nahi chadh payi, unhe dobara upload karein.':'');
+  $('uf').value='';$('nc').value='';$('fcount').textContent='Koi photo nahi chuni';
+  q='';$('q').value='';metal=m;cat=c;await loadCats();$('um').value=m;fillCats();$('uc').value=c;go();
+};
+
+if(ok){
+  sb.auth.getSession().then(({data})=>setAdmin(!!data.session));
+  sb.auth.onAuthStateChange((_e,s)=>setAdmin(!!s));
+}
+drawTabs();fillCats();loadCats();loadRates();loadGrid();drawContact();heartUI();
+// App jaisa naam aur icon (icon-192.png?v=2 aur icon-512.png?v=2 files se). Alag manifest file ki zaroorat nahi.
+(function(){
+  try{
+    const base=new URL('./',location.href).href;
+    const m={name:'Shree Tirupati Jawellers',short_name:'Tirupati',start_url:base,scope:base,display:'standalone',lang:'hi',background_color:'#4A1424',theme_color:'#4A1424',icons:[{src:base+'icon-192.png?v=2',sizes:'192x192',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'maskable'}]};
+    const l=document.createElement('link');l.rel='manifest';
+    l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));
+    document.head.appendChild(l);
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
