@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#4A1424">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png?v=2">
+<link rel="apple-touch-icon" href="icon-192.png?v=2">
 <title>Shree Tirupati Jawellers</title>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -15,7 +15,7 @@
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:400 16px/1.5 Hind,system-ui,sans-serif}
 header{background:var(--head);color:#F6E7C1;padding:18px 16px 20px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:1000px;margin:0 auto}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;max-width:1000px;margin:0 auto}
 h1{font:400 24px/1.1 Marcellus,Georgia,serif;margin:0}
 .adm{background:none;border:1px solid rgba(246,231,193,.6);color:#F6E7C1;border-radius:20px;padding:6px 14px;font:inherit;font-size:14px;cursor:pointer}
 .rates{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:1000px;margin:16px auto 0}
@@ -68,12 +68,26 @@ main{max-width:1000px;margin:0 auto;padding:16px}
 #lbw img{max-width:100%;max-height:78vh;cursor:zoom-in}
 #lbw img.z{max-width:none;max-height:none;width:220%;cursor:zoom-out}
 #lbc{color:#fff;text-align:center;margin:8px 0 14px;font-size:15px}
+.hb{display:flex;gap:8px}
+.heart{position:absolute;top:6px;left:6px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.88);color:#9A1B3C;font-size:20px;line-height:1;cursor:pointer;z-index:2}
+.heart.on{background:#9A1B3C;color:#fff}
+#wl{position:fixed;inset:0;z-index:60;background:var(--bg);color:var(--ink);overflow:auto;padding:12px 16px 40px}
+#wl[hidden]{display:none}
+#wl .lbt button{border-color:var(--line);color:var(--ink)}
+#wl h2,#contact h2{font:400 22px Marcellus,Georgia,serif;margin:6px 0 10px}
+#contact{margin:28px 0 8px;padding:16px;background:var(--surf);border:1px solid var(--line);border-radius:10px}
+#contact p{margin:6px 0}
+.own{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
+.own b{flex:1 1 170px;font-weight:600}
+.cb{display:inline-block;padding:8px 16px;border-radius:8px;background:var(--head);color:#F6E7C1;text-decoration:none;font-weight:500;font-size:14px}
+.cb.wa{background:#1B8A4B;color:#fff}
+.cb.big{display:block;text-align:center;margin:10px 0;padding:12px;font-size:16px}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 </style>
 </head>
 <body>
 <header>
-  <div class="top"><h1>Shree Tirupati Jawellers</h1><button class="adm" id="admBtn">Admin</button></div>
+  <div class="top"><h1>Shree Tirupati Jawellers</h1><div class="hb"><button class="adm" id="wlBtn">♡ Pasand (0)</button><button class="adm" id="admBtn">Admin</button></div></div>
   <div class="rates">
     <div class="rate g"><small>Gold, 10 gram</small><b id="rg">-</b></div>
     <div class="rate s"><small>Silver, 1 kg</small><b id="rs">-</b></div>
@@ -122,12 +136,18 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   <div class="count" id="count"></div>
   <div class="grid" id="grid"></div>
   <button class="more" id="more">Aur designs dekhein</button>
+  <section id="contact"></section>
 </main>
 
 <div id="lb" hidden>
-  <div class="lbt"><button id="del" hidden>Ye design hatayein</button><button id="lbx">Band karein</button></div>
+  <div class="lbt"><button id="lbh">♡ Pasand karein</button><button id="del" hidden>Ye design hatayein</button><button id="lbx">Band karein</button></div>
   <div id="lbw"></div>
   <p id="lbc"></p>
+</div>
+
+<div id="wl" hidden>
+  <div class="lbt"><button id="wlx">Band karein</button></div>
+  <div id="wlb"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -173,8 +193,8 @@ async function loadGrid(){
   if(id!==rid)return;
   if(error){$('count').textContent='Designs load nahi ho paye. Internet check karke dobara koshish karein.';return}
   $('count').textContent=q&&!count?'Is code ka koi design nahi mila':count+' designs';
-  $('grid').innerHTML=data.map(x=>'<div class="card '+x.metal.toLowerCase()+'" data-code="'+esc(x.code)+'"><div class="pic"><img loading="lazy" alt="'+esc(x.name||x.code)+'" src="'+pub('thumb',x.code)+'"></div><p><b>'+esc(x.code)+'</b><span>'+esc(x.name||'')+'</span></p></div>').join('');
-  $('more').style.display=count>shown?'block':'none';selUI();
+  $('grid').innerHTML=data.map(x=>'<div class="card '+x.metal.toLowerCase()+'" data-code="'+esc(x.code)+'"><button class="heart" data-h="'+esc(x.code)+'" aria-label="Pasand">♡</button><div class="pic"><img loading="lazy" alt="'+esc(x.name||x.code)+'" src="'+pub('thumb',x.code)+'"></div><p><b>'+esc(x.code)+'</b><span>'+esc(x.name||'')+'</span></p></div>').join('');
+  $('more').style.display=count>shown?'block':'none';selUI();heartUI();
 }
 function go(){shown=24;drawTabs();loadGrid()}
 $('tabs').onclick=e=>{const m=e.target.dataset.m;if(m){metal=m;cat='All';go()}};
@@ -182,18 +202,55 @@ $('chips').onclick=e=>{const c=e.target.dataset.c;if(c){cat=c;go()}};
 $('more').onclick=()=>{shown+=24;loadGrid()};
 $('q').oninput=e=>{clearTimeout(tm);tm=setTimeout(()=>{q=e.target.value.trim().replace(/[%_]/g,'');go()},250)};
 
+// Dukaan ki jaankari (pata, samay aur map baad mein yahin bharenge)
+const SHOP={owners:[{name:'Vimlesh Kumar',phone:'8107875003'},{name:'Vikram Singh Prajapat',phone:'8058524091'}],address:'',timing:'',maps:''};
+const wa=(ph,text)=>'https://wa.me/91'+ph+(text?'?text='+encodeURIComponent(text):'');
+function drawContact(){
+  const rows=SHOP.owners.map(x=>'<div class="own"><b>'+esc(x.name)+'<br><span style="font-weight:400;color:var(--mute)">'+x.phone+'</span></b><a class="cb" href="tel:+91'+x.phone+'">Call karein</a><a class="cb wa" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ke baare mein jaanna hai.')+'">WhatsApp</a></div>').join('');
+  const mapHref=SHOP.maps||(SHOP.address?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(SHOP.address):'');
+  $('contact').innerHTML='<h2>Hamse sampark karein</h2><p>Proprietor: '+SHOP.owners.map(x=>esc(x.name)).join(' aur ')+'</p>'+rows+
+    (SHOP.address?'<p><b>Pata:</b> '+esc(SHOP.address)+'</p>':'')+(SHOP.timing?'<p><b>Samay:</b> '+esc(SHOP.timing)+'</p>':'')+
+    (mapHref?'<p><a class="cb" target="_blank" rel="noopener" href="'+mapHref+'">Map par dekhein</a></p>':'');
+}
+
+// Pasand ki list (customer ke phone mein hi save hoti hai)
+let wish=[];try{wish=JSON.parse(localStorage.getItem('stj_wish')||'[]')}catch(e){}
+const saveW=()=>{try{localStorage.setItem('stj_wish',JSON.stringify(wish))}catch(e){}};
+function heartUI(){
+  $('wlBtn').textContent='♡ Pasand ('+wish.length+')';
+  document.querySelectorAll('.heart[data-h]').forEach(h=>{const on=wish.includes(h.dataset.h);h.classList.toggle('on',on);h.textContent=on?'♥':'♡'});
+  $('lbh').textContent=cur&&wish.includes(cur)?'♥ Pasand kiya':'♡ Pasand karein';
+}
+function toggleW(code){const i=wish.indexOf(code);if(i<0)wish.push(code);else wish.splice(i,1);saveW();heartUI()}
+$('lbh').onclick=()=>{if(cur)toggleW(cur)};
+let wlOpen=false;
+function drawWl(){
+  const b=$('wlb');
+  if(!wish.length){b.innerHTML='<h2>Meri pasand ki list</h2><p>Abhi list khali hai. Designs par dil (♡) dabakar yahan jodein.</p>';return}
+  b.innerHTML='<h2>Meri pasand ki list ('+wish.length+')</h2><div class="grid">'+
+    wish.map(c=>'<div class="card"><button class="heart on" data-r="'+esc(c)+'" aria-label="Hatayein">♥</button><div class="pic"><img alt="'+esc(c)+'" src="'+pub('thumb',c)+'"></div><p><b>'+esc(c)+'</b></p></div>').join('')+
+    '</div><p style="margin-top:16px">Neeche button dabakar ye list dukaan ko WhatsApp par bhejein.</p>'+
+    SHOP.owners.map(x=>'<a class="cb wa big" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ki site par ye designs pasand aaye hain:\n'+wish.join(', ')+'\nKripya inki jaankari bhejein.')+'">'+esc(x.name)+' ko WhatsApp par bhejein</a>').join('');
+}
+function openWl(){drawWl();$('wl').hidden=false;if(!wlOpen){try{history.pushState({wl:1},'');wlOpen=true}catch(e){}}}
+function closeWl(){if(wlOpen)history.back();else $('wl').hidden=true}
+window.addEventListener('popstate',()=>{if(wlOpen){wlOpen=false;$('wl').hidden=true}});
+$('wlBtn').onclick=openWl;$('wlx').onclick=closeWl;
+$('wlb').onclick=e=>{const r=e.target.closest('[data-r]');if(r){toggleW(r.dataset.r);drawWl()}};
+
 // Bada photo aur zoom
 let lbOpen=false;
 function openLb(){$('lb').hidden=false;if(!lbOpen){try{history.pushState({lb:1},'');lbOpen=true}catch(e){}}}
 function closeLb(){if(lbOpen)history.back();else $('lb').hidden=true}
 window.addEventListener('popstate',()=>{if(lbOpen){lbOpen=false;$('lb').hidden=true}});
 $('grid').onclick=e=>{
+  const hb=e.target.closest('.heart');if(hb){toggleW(hb.dataset.h);return}
   const k=e.target.closest('.card');if(!k)return;
   if(selOn){const c=k.dataset.code;if(sel.has(c))sel.delete(c);else sel.add(c);selUI();return}
   cur=k.dataset.code;
   $('lbw').innerHTML='<img alt="'+esc(cur)+'" src="'+pub('full',cur)+'">';
   $('lbc').textContent=cur+' (zoom ke liye photo par tap karein)';
-  $('del').hidden=!admin;openLb();
+  $('del').hidden=!admin;heartUI();openLb();
 };
 $('lbw').onclick=e=>{if(e.target.tagName==='IMG')e.target.classList.toggle('z')};
 $('lbx').onclick=closeLb;
@@ -312,12 +369,12 @@ if(ok){
   sb.auth.getSession().then(({data})=>setAdmin(!!data.session));
   sb.auth.onAuthStateChange((_e,s)=>setAdmin(!!s));
 }
-drawTabs();fillCats();loadCats();loadRates();loadGrid();
-// App jaisa naam aur icon (icon-192.png aur icon-512.png files se). Alag manifest file ki zaroorat nahi.
+drawTabs();fillCats();loadCats();loadRates();loadGrid();drawContact();heartUI();
+// App jaisa naam aur icon (icon-192.png?v=2 aur icon-512.png?v=2 files se). Alag manifest file ki zaroorat nahi.
 (function(){
   try{
     const base=new URL('./',location.href).href;
-    const m={name:'Shree Tirupati Jawellers',short_name:'Tirupati Jawellers',start_url:base,scope:base,display:'standalone',lang:'hi',background_color:'#4A1424',theme_color:'#4A1424',icons:[{src:base+'icon-192.png',sizes:'192x192',type:'image/png',purpose:'any'},{src:base+'icon-512.png',sizes:'512x512',type:'image/png',purpose:'any'},{src:base+'icon-512.png',sizes:'512x512',type:'image/png',purpose:'maskable'}]};
+    const m={name:'Shree Tirupati Jawellers',short_name:'Tirupati',start_url:base,scope:base,display:'standalone',lang:'hi',background_color:'#4A1424',theme_color:'#4A1424',icons:[{src:base+'icon-192.png?v=2',sizes:'192x192',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'maskable'}]};
     const l=document.createElement('link');l.rel='manifest';
     l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));
     document.head.appendChild(l);
