@@ -315,7 +315,26 @@ $('loginBtn').onclick=async()=>{
   $('loginMsg').textContent=error?'Email ya password galat hai.':'';
   if(!error)$('pw').value='';
 };
-$('logout').onclick=async()=>{await sb.auth.signOut();$('panel').style.display='none'};
+$('logout').onclick=async()=>{
+  const b=$('logout');
+  b.disabled=true;
+  $('logoutMsg').textContent='Logout ho raha hai...';
+
+  try{
+    const {error}=await sb.auth.signOut({scope:'local'});
+    if(error) throw error;
+
+    setAdmin(false);
+    $('panel').style.display='none';
+    $('em').value='';
+    $('pw').value='';
+    $('logoutMsg').textContent='Logout ho gaya.';
+
+  }catch(e){
+    $('logoutMsg').textContent='Logout nahi hua. Dobara koshish karein.';
+  }finally{
+    b.disabled=false;
+  };
 $('saveRate').onclick=async()=>{
   const g=+$('ig').value,s=+$('is').value;
   if(!g||!s){$('rateMsg').textContent='Dono bhav daalein.';return}
