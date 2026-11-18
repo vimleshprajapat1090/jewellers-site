@@ -68,17 +68,17 @@ main{max-width:1000px;margin:0 auto;padding:16px}
 #lbw img{max-width:100%;max-height:78vh;cursor:zoom-in}
 #lbw img.z{max-width:none;max-height:none;width:220%;cursor:zoom-out}
 #lbc{color:#fff;text-align:center;margin:8px 0 14px;font-size:15px}
-.hb{display:flex;gap:8px}
+.hb{display:flex;flex-wrap:wrap;gap:8px}
 .heart{position:absolute;top:6px;left:6px;width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.88);color:#9A1B3C;font-size:20px;line-height:1;cursor:pointer;z-index:2}
 .heart.on{background:#9A1B3C;color:#fff}
-#wl{position:fixed;inset:0;z-index:60;background:var(--bg);color:var(--ink);overflow:auto;padding:12px 16px 40px}
-#wl[hidden]{display:none}
-#wl .lbt button{border-color:var(--line);color:var(--ink)}
-#wl h2,#contact h2{font:400 22px Marcellus,Georgia,serif;margin:6px 0 10px}
+#wl,#ct{position:fixed;inset:0;z-index:60;background:var(--bg);color:var(--ink);overflow:auto;padding:12px 16px 40px}
+#wl[hidden],#ct[hidden]{display:none}
+#wl .lbt button,#ct .lbt button{border-color:var(--line);color:var(--ink)}
+#wl h2,#ct h2,#contact h2{font:400 22px Marcellus,Georgia,serif;margin:6px 0 10px}
 #contact{margin:28px 0 8px;padding:16px;background:var(--surf);border:1px solid var(--line);border-radius:10px}
-#contact p{margin:6px 0}
+#contact p,#ct p{margin:6px 0}
 .own{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}
-.own b{flex:1 1 170px;font-weight:600}
+.own b{flex:1 1 230px;font-weight:600}
 .cb{display:inline-block;padding:8px 16px;border-radius:8px;background:var(--head);color:#F6E7C1;text-decoration:none;font-weight:500;font-size:14px}
 .cb.wa{background:#1B8A4B;color:#fff}
 .cb.big{display:block;text-align:center;margin:10px 0;padding:12px;font-size:16px}
@@ -87,7 +87,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 </head>
 <body>
 <header>
-  <div class="top"><h1>Shree Tirupati Jawellers</h1><div class="hb"><button class="adm" id="wlBtn">♡ Pasand (0)</button><button class="adm" id="admBtn">Admin</button></div></div>
+  <div class="top"><h1>Shree Tirupati Jawellers</h1><div class="hb"><button class="adm" id="ctBtn">Sampark</button><button class="adm" id="wlBtn">♡ Pasand (0)</button><button class="adm" id="admBtn">Admin</button></div></div>
   <div class="rates">
     <div class="rate g"><small>Gold, 10 gram</small><b id="rg">-</b></div>
     <div class="rate s"><small>Silver, 1 kg</small><b id="rs">-</b></div>
@@ -145,6 +145,10 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   <p id="lbc"></p>
 </div>
 
+<div id="ct" hidden>
+  <div class="lbt"><button id="ctx">Band karein</button></div>
+  <div id="ctb"></div>
+</div>
 <div id="wl" hidden>
   <div class="lbt"><button id="wlx">Band karein</button></div>
   <div id="wlb"></div>
@@ -202,16 +206,20 @@ $('chips').onclick=e=>{const c=e.target.dataset.c;if(c){cat=c;go()}};
 $('more').onclick=()=>{shown+=24;loadGrid()};
 $('q').oninput=e=>{clearTimeout(tm);tm=setTimeout(()=>{q=e.target.value.trim().replace(/[%_]/g,'');go()},250)};
 
-// Dukaan ki jaankari (pata, samay aur map baad mein yahin bharenge)
-const SHOP={owners:[{name:'Vimlesh Kumar',phone:'8107875003'},{name:'Vikram Singh Prajapat',phone:'8058524091'}],address:'',timing:'',maps:''};
+// Dukaan ki jaankari (pata baad mein yahin bhar sakte hain)
+const SHOP={owners:[{name:'Vikram Singh Prajapat',phone:'8058524091'},{name:'Vimlesh Kumar',phone:'8107875003'}],address:'',maps:'https://maps.app.goo.gl/hVw8eSShD6dS1tqh9'};
 const wa=(ph,text)=>'https://wa.me/91'+ph+(text?'?text='+encodeURIComponent(text):'');
-function drawContact(){
-  const rows=SHOP.owners.map(x=>'<div class="own"><b>'+esc(x.name)+'<br><span style="font-weight:400;color:var(--mute)">'+x.phone+'</span></b><a class="cb" href="tel:+91'+x.phone+'">Call karein</a><a class="cb wa" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ke baare mein jaanna hai.')+'">WhatsApp</a></div>').join('');
+function contactHTML(){
+  const rows=SHOP.owners.map(x=>'<div class="own"><b>Pro. '+esc(x.name)+', '+x.phone+'</b><a class="cb" href="tel:+91'+x.phone+'">Call karein</a><a class="cb wa" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ke baare mein jaanna hai.')+'">WhatsApp</a></div>').join('');
   const mapHref=SHOP.maps||(SHOP.address?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(SHOP.address):'');
-  $('contact').innerHTML='<h2>Hamse sampark karein</h2><p>Proprietor: '+SHOP.owners.map(x=>esc(x.name)).join(' aur ')+'</p>'+rows+
-    (SHOP.address?'<p><b>Pata:</b> '+esc(SHOP.address)+'</p>':'')+(SHOP.timing?'<p><b>Samay:</b> '+esc(SHOP.timing)+'</p>':'')+
-    (mapHref?'<p><a class="cb" target="_blank" rel="noopener" href="'+mapHref+'">Map par dekhein</a></p>':'');
+  return rows+(SHOP.address?'<p><b>Pata:</b> '+esc(SHOP.address)+'</p>':'')+(mapHref?'<p><a class="cb" target="_blank" rel="noopener" href="'+mapHref+'">Map par dekhein</a></p>':'');
 }
+function drawContact(){$('contact').innerHTML='<h2>Hamse sampark karein</h2>'+contactHTML()}
+let ctOpen=false;
+function openCt(){$('ctb').innerHTML='<h2>Hamse sampark karein</h2><p>Shree Tirupati Jawellers</p>'+contactHTML();$('ct').hidden=false;if(!ctOpen){try{history.pushState({ct:1},'');ctOpen=true}catch(e){}}}
+function closeCt(){if(ctOpen)history.back();else $('ct').hidden=true}
+window.addEventListener('popstate',()=>{if(ctOpen){ctOpen=false;$('ct').hidden=true}});
+$('ctBtn').onclick=openCt;$('ctx').onclick=closeCt;
 
 // Pasand ki list (customer ke phone mein hi save hoti hai)
 let wish=[];try{wish=JSON.parse(localStorage.getItem('stj_wish')||'[]')}catch(e){}
@@ -315,7 +323,12 @@ $('loginBtn').onclick=async()=>{
   $('loginMsg').textContent=error?'Email ya password galat hai.':'';
   if(!error)$('pw').value='';
 };
-$('logout').onclick=async()=>{await sb.auth.signOut();$('panel').style.display='none'};
+$('logout').onclick=async()=>{
+  try{await sb.auth.signOut({scope:'local'})}catch(e){}
+  try{Object.keys(localStorage).filter(k=>/^sb-.*-auth-token/.test(k)).forEach(k=>localStorage.removeItem(k))}catch(e){}
+  setAdmin(false);$('panel').style.display='none';
+  location.reload();
+};
 $('saveRate').onclick=async()=>{
   const g=+$('ig').value,s=+$('is').value;
   if(!g||!s){$('rateMsg').textContent='Dono bhav daalein.';return}
