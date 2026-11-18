@@ -61,7 +61,7 @@ main{max-width:1000px;margin:0 auto;padding:16px}
 .msg{font-size:14px;color:var(--gold);min-height:1.3em}
 #lb{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:50;display:flex;flex-direction:column}
 #lb[hidden]{display:none}
-.lbt{display:flex;justify-content:flex-end;gap:10px;padding:10px 14px}
+.lbt{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;padding:10px 14px}
 .lbt button{padding:6px 14px;border:1px solid rgba(255,255,255,.5);border-radius:20px;background:none;color:#fff;font:inherit;cursor:pointer}
 #lbw{flex:1;overflow:auto;display:flex}
 #lbw>*{margin:auto}
@@ -93,6 +93,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     <div class="rate s"><small>Silver, 1 kg</small><b id="rs">-</b></div>
   </div>
   <div class="asof" id="asof"></div>
+  <div style="max-width:1000px;margin:10px auto 0"><button class="adm" id="posBtn">Aaj ka bhav share karein</button></div>
 </header>
 
 <section id="panel"><div class="in">
@@ -140,7 +141,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 </main>
 
 <div id="lb" hidden>
-  <div class="lbt"><button id="lbh">♡ Pasand karein</button><button id="del" hidden>Ye design hatayein</button><button id="lbx">Band karein</button></div>
+  <div class="lbt"><button id="lbh">♡ Pasand karein</button><button id="lbs">Share karein</button><button id="del" hidden>Ye design hatayein</button><button id="lbx">Band karein</button></div>
   <div id="lbw"></div>
   <p id="lbc"></p>
 </div>
@@ -183,6 +184,7 @@ async function loadCats(){
 async function loadRates(){
   if(!ok)return;
   const {data}=await sb.from('rates').select('*').eq('id',1).maybeSingle();
+  if(data)RT=data;
   if(!data)return;
   $('rg').textContent=fmt(data.gold);$('rs').textContent=fmt(data.silver);
   $('asof').textContent=data.updated_at?'Aakhri update: '+new Date(data.updated_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}):'';
@@ -220,6 +222,65 @@ function openCt(){$('ctb').innerHTML='<h2>Hamse sampark karein</h2><p>Shree Tiru
 function closeCt(){if(ctOpen)history.back();else $('ct').hidden=true}
 window.addEventListener('popstate',()=>{if(ctOpen){ctOpen=false;$('ct').hidden=true}});
 $('ctBtn').onclick=openCt;$('ctx').onclick=closeCt;
+
+// Aaj ka bhav ka poster (WhatsApp par share karne ke liye)
+let RT=null;
+const rr=(c,x,y,w,h,r)=>{c.beginPath();if(c.roundRect)c.roundRect(x,y,w,h,r);else c.rect(x,y,w,h)};
+async function makePoster(){
+  if(!RT||!RT.gold||!RT.silver){alert('Pehle admin se aaj ka bhav daalein.');return}
+  try{await document.fonts.load('60px Marcellus')}catch(e){}
+  const W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
+  const F='Marcellus,Georgia,serif';
+  const bg=c.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#5A1428');bg.addColorStop(1,'#2E0A15');c.fillStyle=bg;c.fillRect(0,0,W,H);
+  const gd=c.createLinearGradient(0,0,W,0);gd.addColorStop(0,'#B8892B');gd.addColorStop(.5,'#F6E7B4');gd.addColorStop(1,'#B8892B');
+  c.strokeStyle=gd;c.lineWidth=10;c.strokeRect(30,30,W-60,H-60);c.lineWidth=3;c.strokeRect(54,54,W-108,H-108);
+  try{
+    const im=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src='icon-512.png?v=2'});
+    c.save();rr(c,W/2-130,90,260,260,40);c.clip();c.drawImage(im,W/2-130,90,260,260);c.restore();
+  }catch(e){}
+  c.textAlign='center';c.fillStyle=gd;c.font='64px '+F;c.fillText('Shree Tirupati Jawellers',W/2,440);
+  c.fillStyle='#F6E7C1';c.font='40px '+F;c.fillText('AAJ KA BHAV',W/2,520);
+  const d=RT.updated_at?new Date(RT.updated_at):new Date();
+  c.font='30px Hind,sans-serif';c.fillStyle='#E3CF9E';
+  c.fillText(d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}),W/2,566);
+  const box=(y,label,val,col)=>{
+    c.strokeStyle=gd;c.lineWidth=3;rr(c,120,y,W-240,230,24);c.stroke();
+    c.fillStyle='#F6E7C1';c.font='38px '+F;c.fillText(label,W/2,y+70);
+    c.fillStyle=col;c.font='96px '+F;c.fillText(fmt(val),W/2,y+170);
+  };
+  box(620,'GOLD (10 gram)',RT.gold,'#E8C56E');
+  box(880,'SILVER (1 kg)',RT.silver,'#D5DADF');
+  c.fillStyle='#F6E7C1';c.font='32px Hind,sans-serif';
+  SHOP.owners.forEach((o,i)=>c.fillText('Pro. '+o.name+': '+o.phone,W/2,1180+i*48));
+  c.fillStyle='#E3CF9E';c.font='28px Hind,sans-serif';c.fillText(location.host+location.pathname.replace(/index\.html$/,''),W/2,1290);
+  cv.toBlob(async b=>{
+    const f=new File([b],'aaj-ka-bhav.png',{type:'image/png'});
+    try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:'Shree Tirupati Jawellers - aaj ka bhav'});return}}
+    catch(e){if(e&&e.name==='AbortError')return}
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='aaj-ka-bhav.png';document.body.appendChild(a);a.click();a.remove();
+  },'image/png');
+}
+$('posBtn').onclick=makePoster;
+
+// Design share (photo + code + link) aur seedha design ka link
+async function shareDesign(code){
+  const url=location.origin+location.pathname+'#'+code;
+  const text='Shree Tirupati Jawellers - design '+code+'\n'+url;
+  try{
+    const r=await fetch(pub('full',code));const b=await r.blob();
+    const f=new File([b],code+'.jpg',{type:'image/jpeg'});
+    if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text});return}
+  }catch(e){if(e&&e.name==='AbortError')return}
+  try{if(navigator.share){await navigator.share({title:'Design '+code,text});return}}catch(e){if(e&&e.name==='AbortError')return}
+  window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+}
+$('lbs').onclick=()=>{if(cur)shareDesign(cur)};
+function showDesign(code){
+  cur=code;
+  $('lbw').innerHTML='<img alt="'+esc(code)+'" src="'+pub('full',code)+'">';
+  $('lbc').textContent=code+' (zoom ke liye photo par tap karein)';
+  $('del').hidden=!admin;heartUI();openLb();
+}
 
 // Pasand ki list (customer ke phone mein hi save hoti hai)
 let wish=[];try{wish=JSON.parse(localStorage.getItem('stj_wish')||'[]')}catch(e){}
@@ -383,6 +444,7 @@ if(ok){
   sb.auth.onAuthStateChange((_e,s)=>setAdmin(!!s));
 }
 drawTabs();fillCats();loadCats();loadRates();loadGrid();drawContact();heartUI();
+if(/^#[GS]\d+$/i.test(location.hash))showDesign(location.hash.slice(1).toUpperCase());
 // App jaisa naam aur icon (icon-192.png?v=2 aur icon-512.png?v=2 files se). Alag manifest file ki zaroorat nahi.
 (function(){
   try{
