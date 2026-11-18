@@ -224,7 +224,9 @@ window.addEventListener('popstate',()=>{if(ctOpen){ctOpen=false;$('ct').hidden=t
 $('ctBtn').onclick=openCt;$('ctx').onclick=closeCt;
 
 // Aaj ka bhav ka poster (WhatsApp par share karne ke liye)
-let RT=null;
+let RT=null,shr=0;
+// Share (status/chat) se wapas aane par page naya khol dete hain, taaki tap kaam karta rahe
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&shr&&Date.now()-shr<1800000){shr=0;location.reload()}});
 const rr=(c,x,y,w,h,r)=>{c.beginPath();if(c.roundRect)c.roundRect(x,y,w,h,r);else c.rect(x,y,w,h)};
 async function makePoster(){
   if(!RT||!RT.gold||!RT.silver){alert('Pehle admin se aaj ka bhav daalein.');return}
@@ -242,7 +244,7 @@ async function makePoster(){
   c.fillStyle='#F6E7C1';c.font='40px '+F;c.fillText('AAJ KA BHAV',W/2,520);
   const d=RT.updated_at?new Date(RT.updated_at):new Date();
   c.font='30px Hind,sans-serif';c.fillStyle='#E3CF9E';
-  c.fillText(d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}),W/2,566);
+  const ds=d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});c.fillText(ds,W/2,566);
   const box=(y,label,val,col)=>{
     c.strokeStyle=gd;c.lineWidth=3;rr(c,120,y,W-240,230,24);c.stroke();
     c.fillStyle='#F6E7C1';c.font='38px '+F;c.fillText(label,W/2,y+70);
@@ -251,19 +253,23 @@ async function makePoster(){
   box(620,'GOLD (10 gram)',RT.gold,'#E8C56E');
   box(880,'SILVER (1 kg)',RT.silver,'#D5DADF');
   c.fillStyle='#F6E7C1';c.font='32px Hind,sans-serif';
-  SHOP.owners.forEach((o,i)=>c.fillText('Pro. '+o.name+': '+o.phone,W/2,1180+i*48));
-  c.fillStyle='#E3CF9E';c.font='28px Hind,sans-serif';c.fillText(location.host+location.pathname.replace(/index\.html$/,''),W/2,1290);
+  SHOP.owners.forEach((o,i)=>c.fillText('Pro. '+o.name+': '+o.phone,W/2,1165+i*46));
+  c.fillStyle='#E3CF9E';c.font='28px Hind,sans-serif';c.fillText(location.host+location.pathname.replace(/index\.html$/,''),W/2,1262);
+  const url=location.origin+location.pathname.replace(/index\.html$/,'');
+  const cap='Shree Tirupati Jawellers\nAaj ka bhav ('+ds+')\nGold (10 gram): '+fmt(RT.gold)+'\nSilver (1 kg): '+fmt(RT.silver)+'\n\nSaare designs dekhein: '+url+'\n'+SHOP.owners.map(o=>'Pro. '+o.name+': '+o.phone).join('\n');
   cv.toBlob(async b=>{
-    const f=new File([b],'aaj-ka-bhav.png',{type:'image/png'});
-    try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:'Shree Tirupati Jawellers - aaj ka bhav'});return}}
+    const f=new File([b],'aaj-ka-bhav.png',{type:'image/png'});shr=Date.now();
+    try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:cap});return}}
     catch(e){if(e&&e.name==='AbortError')return}
     const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='aaj-ka-bhav.png';document.body.appendChild(a);a.click();a.remove();
+    try{await navigator.clipboard.writeText(cap);alert('Poster save ho gaya. Message ka text copy ho gaya hai, WhatsApp mein paste kar dein.')}catch(e){}
   },'image/png');
 }
 $('posBtn').onclick=makePoster;
 
 // Design share (photo + code + link) aur seedha design ka link
 async function shareDesign(code){
+  shr=Date.now();
   const url=location.origin+location.pathname+'#'+code;
   const text='Shree Tirupati Jawellers - design '+code+'\n'+url;
   try{
