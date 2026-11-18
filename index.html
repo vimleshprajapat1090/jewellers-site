@@ -93,7 +93,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     <div class="rate s"><small>Silver, 1 kg</small><b id="rs">-</b></div>
   </div>
   <div class="asof" id="asof"></div>
-  <div style="max-width:1000px;margin:10px auto 0"><button class="adm" id="posBtn">Aaj ka bhav share karein</button></div>
+  <div style="max-width:1000px;margin:10px auto 0;display:flex;flex-wrap:wrap;gap:8px"><button class="adm" id="posBtn">Aaj ka bhav share karein</button></div>
 </header>
 
 <section id="panel"><div class="in">
@@ -209,7 +209,7 @@ $('more').onclick=()=>{shown+=24;loadGrid()};
 $('q').oninput=e=>{clearTimeout(tm);tm=setTimeout(()=>{q=e.target.value.trim().replace(/[%_]/g,'');go()},250)};
 
 // Dukaan ki jaankari (pata baad mein yahin bhar sakte hain)
-const SHOP={owners:[{name:'Vikram Singh Prajapat',phone:'8058524091'},{name:'Vimlesh Kumar',phone:'8107875003'}],address:'',maps:'https://maps.app.goo.gl/hVw8eSShD6dS1tqh9'};
+const SHOP={owners:[{name:'Vikram Singh Prajapat',phone:'8058524091'},{name:'Vimlesh Kumar',phone:'8107875003'}],address:'Veerkhana Kuwa, Bansur, Tehsil ke samne wali gali, 301402, Kotputli-Behror, Rajasthan',maps:'https://maps.app.goo.gl/hVw8eSShD6dS1tqh9'};
 const wa=(ph,text)=>'https://wa.me/91'+ph+(text?'?text='+encodeURIComponent(text):'');
 function contactHTML(){
   const rows=SHOP.owners.map(x=>'<div class="own"><b>Pro. '+esc(x.name)+', '+x.phone+'</b><a class="cb" href="tel:+91'+x.phone+'">Call karein</a><a class="cb wa" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ke baare mein jaanna hai.')+'">WhatsApp</a></div>').join('');
@@ -266,7 +266,6 @@ async function makePoster(){
   },'image/png');
 }
 $('posBtn').onclick=makePoster;
-
 // Design share (photo + code + link) aur seedha design ka link
 async function shareDesign(code){
   shr=Date.now();
