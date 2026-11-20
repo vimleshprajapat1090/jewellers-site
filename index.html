@@ -117,6 +117,10 @@ main{max-width:1000px;margin:0 auto;padding:16px 16px 100px}
 .stat span{font-size:13px;color:var(--mute)}
 .dh{margin:12px 0 4px;color:var(--mute);font-size:14px}
 .crow{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink)}
+#movebox{padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--surf);margin-bottom:12px}
+#movebox[hidden]{display:none}
+#movebox label{display:block;font-size:14px;color:var(--mute);margin-bottom:8px}
+#movebox input,#movebox select{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 </style>
 </head>
@@ -172,8 +176,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   <div id="selbar" hidden>
     <button class="btn" id="selMode">Chunav shuru karein</button>
     <button class="btn" id="selAll" hidden>Sab chunein</button>
+    <button class="btn" id="selMove" hidden>Category badlein (0)</button>
     <button class="btn" id="selDel" hidden>Hatayein (0)</button>
     <span class="msg" id="selMsg"></span>
+  </div>
+  <div id="movebox" hidden>
+    <p class="dh" style="margin-top:0">Chune hue designs ko is category mein bhejein:</p>
+    <div class="row"><label>Metal<select id="mm"><option>Gold</option><option>Silver</option></select></label><label>Category<select id="mc"></select></label></div>
+    <label>Ya naya category ka naam<input id="mn" placeholder="Naya category (jaise Mangalsutra)"></label>
+    <p><button class="btn" id="mgo">Badlein</button> <button class="btn" id="mcancel">Raddh karein</button> <span class="msg" id="mmsg"></span></p>
   </div>
   <div class="count" id="count"></div>
   <div class="grid" id="grid"></div>
@@ -465,11 +476,11 @@ let selOn=false;const sel=new Set();
 function selUI(){
   $('selbar').hidden=!admin;
   $('selMode').textContent=selOn?'Chunav band karein':'Chunav shuru karein';
-  $('selAll').hidden=$('selDel').hidden=!selOn;
-  $('selDel').textContent='Hatayein ('+sel.size+')';
+  $('selAll').hidden=$('selDel').hidden=$('selMove').hidden=!selOn;
+  $('selDel').textContent='Hatayein ('+sel.size+')';$('selMove').textContent='Category badlein ('+sel.size+')';
   document.querySelectorAll('.card').forEach(k=>k.classList.toggle('sel',sel.has(k.dataset.code)));
 }
-$('selMode').onclick=()=>{selOn=!selOn;if(!selOn){sel.clear();$('selMsg').textContent=''}selUI()};
+$('selMode').onclick=()=>{selOn=!selOn;if(!selOn){sel.clear();$('selMsg').textContent='';$('movebox').hidden=true}selUI()};
 $('selAll').onclick=async()=>{
   $('selMsg').textContent='Chun rahe hain...';
   let from=0;
@@ -498,6 +509,76 @@ $('selDel').onclick=async()=>{
   $('selDel').disabled=false;
   $('selMsg').textContent=bad?bad+' designs nahi hat paye, dobara koshish karein.':'Hata diye gaye.';
   await loadCats();if(cat!=='All'&&!CATS[metal].includes(cat))cat='All';go();
+};
+
+// Chune hue designs ki category (aur metal) badalna
+function fillMc(){$('mc').innerHTML=CATS[$('mm').value].map(c=>'<option>'+esc(c)+'</option>').join('')}
+$('mm').onchange=fillMc;
+$('selMove').onclick=()=>{
+  if(!sel.size){$('selMsg').textContent='Pehle designs chunein.';return}
+  $('mm').value=metal;fillMc();$('mn').value='';$('mmsg').textContent='';$('movebox').hidden=false;
+};
+$('mcancel').onclick=()=>{$('movebox').hidden=true};
+// Ek design ko nayi category/metal mein bhejna: photo ka naya naam, phir database
+async function recodeOne(old,nw,m,c){
+  const st=sb.storage.from('designs');
+  const a=await st.move('full/'+old+'.jpg','full/'+nw+'.jpg');
+  if(a.error)return false;
+  const b=await st.move('thumb/'+old+'.jpg','thumb/'+nw+'.jpg');
+  if(b.error){await st.move('full/'+nw+'.jpg','full/'+old+'.jpg');return false}
+  const {error}=await sb.from('designs').update({code:nw,metal:m,category:c,name:c+' design'}).eq('code',old);
+  if(error){await st.move('full/'+nw+'.jpg','full/'+old+'.jpg');await st.move('thumb/'+nw+'.jpg','thumb/'+old+'.jpg');return false}
+  return true;
+}
+$('mgo').onclick=async()=>{
+  const codes=[...sel];const m=$('mm').value;let c=$('mn').value.trim()||$('mc').value;
+  if(!codes.length||!c){$('mmsg').textContent='Designs aur category chunein.';return}
+  const ex=CATS[m].find(x=>x.toLowerCase()===c.toLowerCase());if(ex)c=ex;
+  if(!confirm(codes.length+' designs ko '+m+' - '+c+' mein bhejein?'))return;
+  $('mgo').disabled=true;let bad=0,done=0,range='';
+  const prog=()=>{$('mmsg').textContent='Badal rahe hain: '+done+' / '+codes.length+'. Page band na karein.'};
+  const here={};
+  for(let i=0;i<codes.length;i+=100){
+    const {data,error}=await sb.from('designs').select('code,metal').in('code',codes.slice(i,i+100));
+    if(error){$('mmsg').textContent='Dikkat aayi. Dobara koshish karein.';$('mgo').disabled=false;return}
+    data.forEach(r=>here[r.code]=r.metal);
+  }
+  const same=codes.filter(x=>here[x]===m),diff=codes.filter(x=>here[x]&&here[x]!==m);
+  for(let i=0;i<same.length;i+=100){
+    const ch=same.slice(i,i+100);
+    const {error}=await sb.from('designs').update({category:c,name:c+' design'}).in('code',ch);
+    if(error)bad+=ch.length;else{ch.forEach(x=>sel.delete(x));done+=ch.length}
+    prog();
+  }
+  if(diff.length){
+    const {data:nc,error:e2}=await sb.rpc('next_codes',{m:m,n:diff.length});
+    if(e2||!nc||nc.length!==diff.length){
+      if(confirm('Naye code nahi mil paye (shayad SQL abhi nahi chali). Purana code rakhkar hi category badal dein?')){
+        for(let i=0;i<diff.length;i+=100){
+          const ch=diff.slice(i,i+100);
+          const {error}=await sb.from('designs').update({metal:m,category:c,name:c+' design'}).in('code',ch);
+          if(error)bad+=ch.length;else{ch.forEach(x=>sel.delete(x));done+=ch.length}
+          prog();
+        }
+      }else bad+=diff.length;
+    }else{
+      let i=0;
+      const worker=async()=>{
+        while(i<diff.length){
+          const k=i++;
+          if(await recodeOne(diff[k],nc[k],m,c)){sel.delete(diff[k]);done++}else bad++;
+          prog();
+        }
+      };
+      await Promise.all([worker(),worker(),worker(),worker()]);
+      range=' Naye code: '+nc[0]+' se '+nc[nc.length-1]+'.';
+    }
+  }
+  $('mgo').disabled=false;
+  if(bad){$('mmsg').textContent=bad+' designs nahi badal payi. Dobara koshish karein.';selUI();}
+  else{$('mmsg').textContent='';$('movebox').hidden=true}
+  $('selMsg').textContent=done+' designs '+m+' - '+c+' mein bhej di gayi.'+range;
+  await loadCats();if(cat!=='All'&&!CATS[metal].includes(cat))cat='All';go();loadDash();
 };
 
 // Admin
