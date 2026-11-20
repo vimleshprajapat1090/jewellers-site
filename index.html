@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="hi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -128,13 +128,13 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <div id="splash"><img src="icon-512.png?v=2" alt=""><p>Shree Tirupati Jawellers</p><i></i></div>
 <script>try{if(sessionStorage.getItem('stj_splash'))document.getElementById('splash').style.display='none';else sessionStorage.setItem('stj_splash','1')}catch(e){}</script>
 <header>
-  <div class="top"><h1>Shree Tirupati Jawellers</h1><div class="hb"><button class="adm" id="ctBtn">Sampark</button><button class="adm" id="wlBtn">♡ Pasand (0)</button><button class="adm" id="admBtn">Admin</button></div></div>
+  <div class="top"><h1>Shree Tirupati Jawellers</h1><div class="hb"><button class="adm" id="ctBtn">Contact</button><button class="adm" id="wlBtn">♡ Wishlist (0)</button><button class="adm" id="admBtn">Admin</button></div></div>
   <div class="rates">
-    <div class="rate g"><small>Gold, 10 gram</small><b id="rg">-</b></div>
+    <div class="rate g"><small>Gold, 10 gm</small><b id="rg">-</b></div>
     <div class="rate s"><small>Silver, 1 kg</small><b id="rs">-</b></div>
   </div>
   <div class="asof" id="asof"></div>
-  <div style="max-width:1000px;margin:10px auto 0;display:flex;flex-wrap:wrap;gap:8px"><button class="adm" id="posBtn">Aaj ka bhav share karein</button></div>
+  <div style="max-width:1000px;margin:10px auto 0;display:flex;flex-wrap:wrap;gap:8px"><button class="adm" id="posBtn">Share today’s rate</button></div>
 </header>
 
 <section id="panel"><div class="in">
@@ -149,62 +149,62 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   <div id="tools" hidden>
     <h2>Dashboard</h2>
     <div id="dash"></div>
-    <p><button class="btn" id="dashBtn">Ginti dobara dekhein</button></p>
-    <h2>Aaj ka bhav update karein</h2>
+    <p><button class="btn" id="dashBtn">Refresh counts</button></p>
+    <h2>Update today’s rate</h2>
     <div class="row">
-      <label>Gold (10 gram, ₹)<input id="ig" inputmode="numeric"></label>
+      <label>Gold (10 gm, ₹)<input id="ig" inputmode="numeric"></label>
       <label>Silver (1 kg, ₹)<input id="is" inputmode="numeric"></label>
     </div>
-    <p><button class="btn" id="saveRate">Bhav save karein</button> <span class="msg" id="rateMsg"></span></p>
-    <h2>Ek saath kai photos upload karein</h2>
+    <p><button class="btn" id="saveRate">Save rate</button> <span class="msg" id="rateMsg"></span></p>
+    <h2>Upload many photos at once</h2>
     <div class="row">
       <label>Metal<select id="um"><option>Gold</option><option>Silver</option></select></label>
       <label>Category<select id="uc"></select></label>
     </div>
-    <label>Naya category ka naam (jaise Mangalsutra). Khali chhodein to upar wali category use hogi<input id="nc" placeholder="Naya category"></label>
-    <p><label class="btn file" for="uf">Photos chunein<input id="uf" type="file" accept="image/*" multiple></label> <span class="msg" id="fcount">200-500 photos ek saath chun sakte hain</span></p>
-    <p><button class="btn" id="upBtn">Upload karein</button> <span class="msg" id="upMsg"></span></p>
+    <label>New category name (e.g. Mangalsutra). Leave empty to use the category selected above<input id="nc" placeholder="New category"></label>
+    <p><label class="btn file" for="uf">Select photos<input id="uf" type="file" accept="image/*" multiple></label> <span class="msg" id="fcount">You can select 200-500 photos at once</span></p>
+    <p><button class="btn" id="upBtn">Upload</button> <span class="msg" id="upMsg"></span></p>
     <button class="btn" id="logout">Logout</button>
   </div>
 </div></section>
 
 <main>
-  <div id="fresh" hidden><div class="fh"><h3>Nayi aayi designs</h3><button class="chipb" id="rnd">Koi bhi design dikhao</button></div><div class="strip" id="strip"></div></div>
-  <input id="q" type="search" placeholder="Design ka code likhein (jaise G1001)" aria-label="Design code search">
+  <div id="fresh" hidden><div class="fh"><h3>New arrivals</h3><button class="chipb" id="rnd">Show a random design</button></div><div class="strip" id="strip"></div></div>
+  <input id="q" type="search" placeholder="Enter design code (e.g. G1001)" aria-label="Design code search">
   <div class="tabs" id="tabs"></div>
   <div class="chips" id="chips"></div>
   <div id="selbar" hidden>
-    <button class="btn" id="selMode">Chunav shuru karein</button>
-    <button class="btn" id="selAll" hidden>Sab chunein</button>
-    <button class="btn" id="selMove" hidden>Category badlein (0)</button>
-    <button class="btn" id="selDel" hidden>Hatayein (0)</button>
+    <button class="btn" id="selMode">Start selecting</button>
+    <button class="btn" id="selAll" hidden>Select all</button>
+    <button class="btn" id="selMove" hidden>Change category (0)</button>
+    <button class="btn" id="selDel" hidden>Delete (0)</button>
     <span class="msg" id="selMsg"></span>
   </div>
   <div id="movebox" hidden>
-    <p class="dh" style="margin-top:0">Chune hue designs ko is category mein bhejein:</p>
+    <p class="dh" style="margin-top:0">Move the selected designs to this category:</p>
     <div class="row"><label>Metal<select id="mm"><option>Gold</option><option>Silver</option></select></label><label>Category<select id="mc"></select></label></div>
-    <label>Ya naya category ka naam<input id="mn" placeholder="Naya category (jaise Mangalsutra)"></label>
-    <p><button class="btn" id="mgo">Badlein</button> <button class="btn" id="mcancel">Raddh karein</button> <span class="msg" id="mmsg"></span></p>
+    <label>Or new category name<input id="mn" placeholder="New category (e.g. Mangalsutra)"></label>
+    <p><button class="btn" id="mgo">Move</button> <button class="btn" id="mcancel">Cancel</button> <span class="msg" id="mmsg"></span></p>
   </div>
   <div class="count" id="count"></div>
   <div class="grid" id="grid"></div>
-  <button class="more" id="more">Aur designs dekhein</button>
+  <button class="more" id="more">Show more designs</button>
   <section id="contact"></section>
 </main>
 
 <div id="lb" hidden>
-  <div class="lbt"><button id="lbh">♡ Pasand karein</button><button id="lbs">Share karein</button><button id="lbq">WhatsApp par poochein</button><button id="del" hidden>Ye design hatayein</button><button id="lbx">Band karein</button></div>
+  <div class="lbt"><button id="lbh">♡ Add to wishlist</button><button id="lbs">Share</button><button id="lbq">Ask on WhatsApp</button><button id="del" hidden>Delete this design</button><button id="lbx">Close</button></div>
   <div id="lbw"></div>
-  <button class="nv l" id="nvl" aria-label="Pichli design">&#8249;</button><button class="nv r" id="nvr" aria-label="Agli design">&#8250;</button>
+  <button class="nv l" id="nvl" aria-label="Previous design">&#8249;</button><button class="nv r" id="nvr" aria-label="Next design">&#8250;</button>
   <p id="lbc"></p>
 </div>
 
 <div id="ct" hidden>
-  <div class="lbt"><button id="ctx">Band karein</button></div>
+  <div class="lbt"><button id="ctx">Close</button></div>
   <div id="ctb"></div>
 </div>
 <div id="wl" hidden>
-  <div class="lbt"><button id="wlx">Band karein</button></div>
+  <div class="lbt"><button id="wlx">Close</button></div>
   <div id="wlb"></div>
 </div>
 
@@ -225,7 +225,7 @@ let CATS={Gold:[],Silver:[]},metal='Gold',cat='All',shown=24,q='',admin=false,cu
 
 function drawTabs(){
   $('tabs').innerHTML=['Gold','Silver'].map(m=>'<button class="'+(m===metal?'on ':'')+m[0].toLowerCase()+'" data-m="'+m+'">'+m+'</button>').join('');
-  $('chips').innerHTML=['All',...CATS[metal]].map(c=>'<button class="'+(c===cat?'on':'')+'" data-c="'+esc(c)+'">'+(c==='All'?'Sabhi':esc(c))+'</button>').join('');
+  $('chips').innerHTML=['All',...CATS[metal]].map(c=>'<button class="'+(c===cat?'on':'')+'" data-c="'+esc(c)+'">'+(c==='All'?'All':esc(c))+'</button>').join('');
   $('tabs').style.display=$('chips').style.display=q?'none':'';
 }
 async function loadCats(){
@@ -243,19 +243,19 @@ async function loadRates(){
   if(data)RT=data;
   if(!data)return;
   $('rg').textContent=fmt(data.gold);$('rs').textContent=fmt(data.silver);
-  $('asof').textContent=data.updated_at?'Aakhri update: '+new Date(data.updated_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}):'';
+  $('asof').textContent=data.updated_at?'Last updated: '+new Date(data.updated_at).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'}):'';
   $('ig').value=data.gold||'';$('is').value=data.silver||'';
 }
 async function loadGrid(){
-  if(!ok){$('count').textContent='Pehle index.html mein Supabase ki details bharein.';return}
+  if(!ok){$('count').textContent='Add your Supabase details in index.html first.';return}
   const id=++rid;
   let r=sb.from('designs').select('code,name,metal,category',{count:'exact'}).order('id',{ascending:false});
   if(q)r=r.ilike('code','%'+q+'%');else{r=r.eq('metal',metal);if(cat!=='All')r=r.eq('category',cat)}
   const {data,count,error}=await r.range(0,shown-1);
   if(id!==rid)return;
-  if(error){$('count').textContent='Designs load nahi ho paye. Internet check karke dobara koshish karein.';return}
-  $('count').textContent=q&&!count?'Is code ka koi design nahi mila':count+' designs';
-  $('grid').innerHTML=data.map(x=>'<div class="card '+x.metal.toLowerCase()+'" data-code="'+esc(x.code)+'"><button class="heart" data-h="'+esc(x.code)+'" aria-label="Pasand">♡</button><div class="pic"><img loading="lazy" alt="'+esc(x.name||x.code)+'" src="'+pub('thumb',x.code)+'"></div><p><b>'+esc(x.code)+'</b><span>'+esc(x.name||'')+'</span></p></div>').join('');
+  if(error){$('count').textContent='Could not load designs. Check your internet and try again.';return}
+  $('count').textContent=q&&!count?'No design found for this code':count+' designs';
+  $('grid').innerHTML=data.map(x=>'<div class="card '+x.metal.toLowerCase()+'" data-code="'+esc(x.code)+'"><button class="heart" data-h="'+esc(x.code)+'" aria-label="Wishlist">♡</button><div class="pic"><img loading="lazy" alt="'+esc(x.name||x.code)+'" src="'+pub('thumb',x.code)+'"></div><p><b>'+esc(x.code)+'</b><span>'+esc(x.name||'')+'</span></p></div>').join('');
   $('more').style.display=count>shown?'block':'none';selUI();heartUI();
 }
 function go(){shown=24;drawTabs();loadGrid()}
@@ -268,13 +268,13 @@ $('q').oninput=e=>{clearTimeout(tm);tm=setTimeout(()=>{q=e.target.value.trim().r
 const SHOP={owners:[{name:'Vikram Singh Prajapat',phone:'8058524091'},{name:'Vimlesh Kumar',phone:'8107875003'}],address:'Veerkhana Kuwa, Bansur, Tehsil ke samne wali gali, 301402, Kotputli-Behror, Rajasthan',maps:'https://maps.app.goo.gl/hVw8eSShD6dS1tqh9'};
 const wa=(ph,text)=>'https://wa.me/91'+ph+(text?'?text='+encodeURIComponent(text):'');
 function contactHTML(){
-  const rows=SHOP.owners.map(x=>'<div class="own"><b>Pro. '+esc(x.name)+', '+x.phone+'</b><a class="cb" href="tel:+91'+x.phone+'">Call karein</a><a class="cb wa" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ke baare mein jaanna hai.')+'">WhatsApp</a></div>').join('');
+  const rows=SHOP.owners.map(x=>'<div class="own"><b>Pro. '+esc(x.name)+', '+x.phone+'</b><a class="cb" href="tel:+91'+x.phone+'">Call</a><a class="cb wa" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ke baare mein jaanna hai.')+'">WhatsApp</a></div>').join('');
   const mapHref=SHOP.maps||(SHOP.address?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(SHOP.address):'');
-  return rows+(SHOP.address?'<p><b>Pata:</b> '+esc(SHOP.address)+'</p>':'')+(mapHref?'<p><a class="cb" target="_blank" rel="noopener" href="'+mapHref+'">Map par dekhein</a></p>':'');
+  return rows+(SHOP.address?'<p><b>Address:</b> '+esc(SHOP.address)+'</p>':'')+(mapHref?'<p><a class="cb" target="_blank" rel="noopener" href="'+mapHref+'">View on map</a></p>':'');
 }
-function drawContact(){$('contact').innerHTML='<h2>Hamse sampark karein</h2>'+contactHTML()}
+function drawContact(){$('contact').innerHTML='<h2>Contact us</h2>'+contactHTML()}
 let ctOpen=false;
-function openCt(){$('ctb').innerHTML='<h2>Hamse sampark karein</h2><p>Shree Tirupati Jawellers</p>'+contactHTML();$('ct').hidden=false;if(!ctOpen){try{history.pushState({ct:1},'');ctOpen=true}catch(e){}}}
+function openCt(){$('ctb').innerHTML='<h2>Contact us</h2><p>Shree Tirupati Jawellers</p>'+contactHTML();$('ct').hidden=false;if(!ctOpen){try{history.pushState({ct:1},'');ctOpen=true}catch(e){}}}
 function closeCt(){if(ctOpen)history.back();else $('ct').hidden=true}
 window.addEventListener('popstate',()=>{if(ctOpen){ctOpen=false;$('ct').hidden=true}});
 $('ctBtn').onclick=openCt;$('ctx').onclick=closeCt;
@@ -285,7 +285,7 @@ let RT=null,shr=0;
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&shr&&Date.now()-shr<1800000){shr=0;location.reload()}});
 const rr=(c,x,y,w,h,r)=>{c.beginPath();if(c.roundRect)c.roundRect(x,y,w,h,r);else c.rect(x,y,w,h)};
 async function makePoster(){
-  if(!RT||!RT.gold||!RT.silver){alert('Pehle admin se aaj ka bhav daalein.');return}
+  if(!RT||!RT.gold||!RT.silver){alert('Please enter today’s rate in Admin first.');return}
   try{await document.fonts.load('60px Marcellus')}catch(e){}
   const W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
   const F='Marcellus,Georgia,serif';
@@ -297,7 +297,7 @@ async function makePoster(){
     c.save();rr(c,W/2-130,90,260,260,40);c.clip();c.drawImage(im,W/2-130,90,260,260);c.restore();
   }catch(e){}
   c.textAlign='center';c.fillStyle=gd;c.font='64px '+F;c.fillText('Shree Tirupati Jawellers',W/2,440);
-  c.fillStyle='#F6E7C1';c.font='40px '+F;c.fillText('AAJ KA BHAV',W/2,520);
+  c.fillStyle='#F6E7C1';c.font='40px '+F;c.fillText('TODAY’S RATE',W/2,520);
   const d=RT.updated_at?new Date(RT.updated_at):new Date();
   c.font='30px Hind,sans-serif';c.fillStyle='#E3CF9E';
   const ds=d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});c.fillText(ds,W/2,566);
@@ -306,19 +306,19 @@ async function makePoster(){
     c.fillStyle='#F6E7C1';c.font='38px '+F;c.fillText(label,W/2,y+70);
     c.fillStyle=col;c.font='96px '+F;c.fillText(fmt(val),W/2,y+170);
   };
-  box(620,'GOLD (10 gram)',RT.gold,'#E8C56E');
+  box(620,'GOLD (10 gm)',RT.gold,'#E8C56E');
   box(880,'SILVER (1 kg)',RT.silver,'#D5DADF');
   c.fillStyle='#F6E7C1';c.font='32px Hind,sans-serif';
   SHOP.owners.forEach((o,i)=>c.fillText('Pro. '+o.name+': '+o.phone,W/2,1165+i*46));
   c.fillStyle='#E3CF9E';c.font='28px Hind,sans-serif';c.fillText(location.host+location.pathname.replace(/index\.html$/,''),W/2,1262);
   const url=location.origin+location.pathname.replace(/index\.html$/,'');
-  const cap='Shree Tirupati Jawellers\nAaj ka bhav ('+ds+')\nGold (10 gram): '+fmt(RT.gold)+'\nSilver (1 kg): '+fmt(RT.silver)+'\n\nSaare designs dekhein: '+url+'\n'+SHOP.owners.map(o=>'Pro. '+o.name+': '+o.phone).join('\n');
+  const cap='Shree Tirupati Jawellers\nToday’s rate ('+ds+')\nGold (10 gm): '+fmt(RT.gold)+'\nSilver (1 kg): '+fmt(RT.silver)+'\n\nSee all designs: '+url+'\n'+SHOP.owners.map(o=>'Pro. '+o.name+': '+o.phone).join('\n');
   cv.toBlob(async b=>{
-    const f=new File([b],'aaj-ka-bhav.png',{type:'image/png'});shr=Date.now();
+    const f=new File([b],'todays-rate.png',{type:'image/png'});shr=Date.now();
     try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],text:cap});return}}
     catch(e){if(e&&e.name==='AbortError')return}
-    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='aaj-ka-bhav.png';document.body.appendChild(a);a.click();a.remove();
-    try{await navigator.clipboard.writeText(cap);alert('Poster save ho gaya. Message ka text copy ho gaya hai, WhatsApp mein paste kar dein.')}catch(e){}
+    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='todays-rate.png';document.body.appendChild(a);a.click();a.remove();
+    try{await navigator.clipboard.writeText(cap);alert('Poster saved. The message text was copied; paste it in WhatsApp.')}catch(e){}
   },'image/png');
 }
 $('posBtn').onclick=makePoster;
@@ -339,7 +339,7 @@ $('lbs').onclick=()=>{if(cur)shareDesign(cur)};
 function showDesign(code){
   cur=code;
   $('lbw').innerHTML='<img alt="'+esc(code)+'" src="'+pub('full',code)+'">';
-  $('lbc').textContent=code+' (zoom ke liye photo par tap karein)';
+  $('lbc').textContent=code+' (tap the photo to zoom)';
   $('del').hidden=!admin;heartUI();openLb();
 }
 
@@ -405,7 +405,7 @@ document.addEventListener('keydown',e=>{if(!lbOpen)return;if(e.key==='ArrowRight
 async function cnt(f){const {count}=await f(sb.from('designs').select('id',{count:'exact',head:true}));return count||0}
 async function loadDash(){
   if(!ok||!admin)return;
-  $('dash').textContent='Ginti ho rahi hai...';
+  $('dash').textContent='Counting...';
   try{
     if(!CATS.Gold.length&&!CATS.Silver.length)await loadCats();
     const wk=new Date(Date.now()-7*864e5).toISOString();
@@ -414,9 +414,9 @@ async function loadDash(){
     for(const m of ['Gold','Silver'])for(const c of CATS[m])rows.push({m,c,n:0});
     const counts=await Promise.all(rows.map(r=>cnt(f=>f.eq('metal',r.m).eq('category',r.c))));
     rows.forEach((r,i)=>r.n=counts[i]);rows.sort((a,b)=>b.n-a.n);
-    $('dash').innerHTML='<div class="stats"><div class="stat"><b>'+t+'</b><span>Kul designs</span></div><div class="stat"><b>'+n+'</b><span>Pichle 7 din mein nayi</span></div><div class="stat"><b>'+g+'</b><span>Gold ki photos</span></div><div class="stat"><b>'+sv+'</b><span>Silver ki photos</span></div></div>'+
-      (rows.length?'<p class="dh">Category ke hisaab se</p>'+rows.map(r=>'<div class="crow"><span>'+esc(r.m)+' - '+esc(r.c)+'</span><b>'+r.n+'</b></div>').join(''):'');
-  }catch(e){$('dash').textContent='Ginti nahi aa payi. Dobara koshish karein.'}
+    $('dash').innerHTML='<div class="stats"><div class="stat"><b>'+t+'</b><span>Total designs</span></div><div class="stat"><b>'+n+'</b><span>New in last 7 days</span></div><div class="stat"><b>'+g+'</b><span>Gold photos</span></div><div class="stat"><b>'+sv+'</b><span>Silver photos</span></div></div>'+
+      (rows.length?'<p class="dh">By category</p>'+rows.map(r=>'<div class="crow"><span>'+esc(r.m)+' - '+esc(r.c)+'</span><b>'+r.n+'</b></div>').join(''):'');
+  }catch(e){$('dash').textContent='Could not load counts. Please try again.'}
 }
 $('dashBtn').onclick=loadDash;
 $('splash').onclick=()=>{$('splash').style.display='none'};
@@ -425,20 +425,20 @@ $('splash').onclick=()=>{$('splash').style.display='none'};
 let wish=[];try{wish=JSON.parse(localStorage.getItem('stj_wish')||'[]')}catch(e){}
 const saveW=()=>{try{localStorage.setItem('stj_wish',JSON.stringify(wish))}catch(e){}};
 function heartUI(){
-  $('wlBtn').textContent='♡ Pasand ('+wish.length+')';
+  $('wlBtn').textContent='♡ Wishlist ('+wish.length+')';
   document.querySelectorAll('.heart[data-h]').forEach(h=>{const on=wish.includes(h.dataset.h);h.classList.toggle('on',on);h.textContent=on?'♥':'♡'});
-  $('lbh').textContent=cur&&wish.includes(cur)?'♥ Pasand kiya':'♡ Pasand karein';
+  $('lbh').textContent=cur&&wish.includes(cur)?'♥ In wishlist':'♡ Add to wishlist';
 }
 function toggleW(code){const i=wish.indexOf(code);if(i<0)wish.push(code);else wish.splice(i,1);saveW();heartUI()}
 $('lbh').onclick=()=>{if(cur)toggleW(cur)};
 let wlOpen=false;
 function drawWl(){
   const b=$('wlb');
-  if(!wish.length){b.innerHTML='<h2>Meri pasand ki list</h2><p>Abhi list khali hai. Designs par dil (♡) dabakar yahan jodein.</p>';return}
-  b.innerHTML='<h2>Meri pasand ki list ('+wish.length+')</h2><div class="grid">'+
-    wish.map(c=>'<div class="card"><button class="heart on" data-r="'+esc(c)+'" aria-label="Hatayein">♥</button><div class="pic"><img alt="'+esc(c)+'" src="'+pub('thumb',c)+'"></div><p><b>'+esc(c)+'</b></p></div>').join('')+
-    '</div><p style="margin-top:16px">Neeche button dabakar ye list dukaan ko WhatsApp par bhejein.</p>'+
-    SHOP.owners.map(x=>'<a class="cb wa big" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ki site par ye designs pasand aaye hain:\n'+wish.join(', ')+'\nKripya inki jaankari bhejein.')+'">'+esc(x.name)+' ko WhatsApp par bhejein</a>').join('');
+  if(!wish.length){b.innerHTML='<h2>My wishlist</h2><p>Your wishlist is empty. Tap the heart (♡) on a design to add it here.</p>';return}
+  b.innerHTML='<h2>My wishlist ('+wish.length+')</h2><div class="grid">'+
+    wish.map(c=>'<div class="card"><button class="heart on" data-r="'+esc(c)+'" aria-label="Remove">♥</button><div class="pic"><img alt="'+esc(c)+'" src="'+pub('thumb',c)+'"></div><p><b>'+esc(c)+'</b></p></div>').join('')+
+    '</div><p style="margin-top:16px">Tap a button below to send this list to the shop on WhatsApp.</p>'+
+    SHOP.owners.map(x=>'<a class="cb wa big" target="_blank" rel="noopener" href="'+wa(x.phone,'Namaste, mujhe Shree Tirupati Jawellers ki site par ye designs pasand aaye hain:\n'+wish.join(', ')+'\nKripya inki jaankari bhejein.')+'">'+esc(x.name)+' - send on WhatsApp</a>').join('');
 }
 function openWl(){drawWl();$('wl').hidden=false;if(!wlOpen){try{history.pushState({wl:1},'');wlOpen=true}catch(e){}}}
 function closeWl(){if(wlOpen)history.back();else $('wl').hidden=true}
@@ -457,17 +457,17 @@ $('grid').onclick=e=>{
   if(selOn){const c=k.dataset.code;if(sel.has(c))sel.delete(c);else sel.add(c);selUI();return}
   cur=k.dataset.code;
   $('lbw').innerHTML='<img alt="'+esc(cur)+'" src="'+pub('full',cur)+'">';
-  $('lbc').textContent=cur+' (zoom ke liye photo par tap karein)';
+  $('lbc').textContent=cur+' (tap the photo to zoom)';
   $('del').hidden=!admin;heartUI();openLb();
 };
 $('lbw').onclick=e=>{if(e.target.tagName==='IMG')e.target.classList.toggle('z')};
 $('lbx').onclick=closeLb;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&lbOpen)closeLb()});
 $('del').onclick=async()=>{
-  if(!cur||!confirm(cur+' hamesha ke liye hata dein?'))return;
+  if(!cur||!confirm('Delete '+cur+' permanently?'))return;
   await sb.storage.from('designs').remove(['full/'+cur+'.jpg','thumb/'+cur+'.jpg']);
   const {error}=await sb.from('designs').delete().eq('code',cur);
-  if(error){alert('Hata nahi paye. Dobara koshish karein.');return}
+  if(error){alert('Could not delete. Please try again.');return}
   closeLb();await loadCats();loadGrid();
 };
 
@@ -475,14 +475,14 @@ $('del').onclick=async()=>{
 let selOn=false;const sel=new Set();
 function selUI(){
   $('selbar').hidden=!admin;
-  $('selMode').textContent=selOn?'Chunav band karein':'Chunav shuru karein';
+  $('selMode').textContent=selOn?'Stop selecting':'Start selecting';
   $('selAll').hidden=$('selDel').hidden=$('selMove').hidden=!selOn;
-  $('selDel').textContent='Hatayein ('+sel.size+')';$('selMove').textContent='Category badlein ('+sel.size+')';
+  $('selDel').textContent='Delete ('+sel.size+')';$('selMove').textContent='Change category ('+sel.size+')';
   document.querySelectorAll('.card').forEach(k=>k.classList.toggle('sel',sel.has(k.dataset.code)));
 }
 $('selMode').onclick=()=>{selOn=!selOn;if(!selOn){sel.clear();$('selMsg').textContent='';$('movebox').hidden=true}selUI()};
 $('selAll').onclick=async()=>{
-  $('selMsg').textContent='Chun rahe hain...';
+  $('selMsg').textContent='Selecting...';
   let from=0;
   while(true){
     let r=sb.from('designs').select('code').order('id');
@@ -492,22 +492,22 @@ $('selAll').onclick=async()=>{
     data.forEach(x=>sel.add(x.code));
     if(data.length<1000)break;from+=1000;
   }
-  $('selMsg').textContent=sel.size+' designs chune gaye.';selUI();
+  $('selMsg').textContent=sel.size+' designs selected.';selUI();
 };
 $('selDel').onclick=async()=>{
   const codes=[...sel];if(!codes.length)return;
-  if(!confirm(codes.length+' designs hamesha ke liye hata dein? Ye wapas nahi aayenge.'))return;
+  if(!confirm(codes.length+' designs will be deleted permanently. This cannot be undone. Continue?'))return;
   $('selDel').disabled=true;let bad=0;
   for(let i=0;i<codes.length;i+=50){
     const ch=codes.slice(i,i+50);
-    $('selMsg').textContent='Hata rahe hain: '+Math.min(i+50,codes.length)+' / '+codes.length;
+    $('selMsg').textContent='Deleting: '+Math.min(i+50,codes.length)+' / '+codes.length;
     const {error}=await sb.from('designs').delete().in('code',ch);
     if(error){bad+=ch.length;continue}
     await sb.storage.from('designs').remove(ch.flatMap(c=>['full/'+c+'.jpg','thumb/'+c+'.jpg']));
     ch.forEach(c=>sel.delete(c));
   }
   $('selDel').disabled=false;
-  $('selMsg').textContent=bad?bad+' designs nahi hat paye, dobara koshish karein.':'Hata diye gaye.';
+  $('selMsg').textContent=bad?bad+' designs could not be deleted. Please try again.':'Deleted.';
   await loadCats();if(cat!=='All'&&!CATS[metal].includes(cat))cat='All';go();
 };
 
@@ -515,7 +515,7 @@ $('selDel').onclick=async()=>{
 function fillMc(){$('mc').innerHTML=CATS[$('mm').value].map(c=>'<option>'+esc(c)+'</option>').join('')}
 $('mm').onchange=fillMc;
 $('selMove').onclick=()=>{
-  if(!sel.size){$('selMsg').textContent='Pehle designs chunein.';return}
+  if(!sel.size){$('selMsg').textContent='Select designs first.';return}
   $('mm').value=metal;fillMc();$('mn').value='';$('mmsg').textContent='';$('movebox').hidden=false;
 };
 $('mcancel').onclick=()=>{$('movebox').hidden=true};
@@ -532,15 +532,15 @@ async function recodeOne(old,nw,m,c){
 }
 $('mgo').onclick=async()=>{
   const codes=[...sel];const m=$('mm').value;let c=$('mn').value.trim()||$('mc').value;
-  if(!codes.length||!c){$('mmsg').textContent='Designs aur category chunein.';return}
+  if(!codes.length||!c){$('mmsg').textContent='Select designs and a category.';return}
   const ex=CATS[m].find(x=>x.toLowerCase()===c.toLowerCase());if(ex)c=ex;
-  if(!confirm(codes.length+' designs ko '+m+' - '+c+' mein bhejein?'))return;
+  if(!confirm('Move '+codes.length+' designs to '+m+' - '+c+'?'))return;
   $('mgo').disabled=true;let bad=0,done=0,range='';
-  const prog=()=>{$('mmsg').textContent='Badal rahe hain: '+done+' / '+codes.length+'. Page band na karein.'};
+  const prog=()=>{$('mmsg').textContent='Moving: '+done+' / '+codes.length+'. Do not close this page.'};
   const here={};
   for(let i=0;i<codes.length;i+=100){
     const {data,error}=await sb.from('designs').select('code,metal').in('code',codes.slice(i,i+100));
-    if(error){$('mmsg').textContent='Dikkat aayi. Dobara koshish karein.';$('mgo').disabled=false;return}
+    if(error){$('mmsg').textContent='Something went wrong. Please try again.';$('mgo').disabled=false;return}
     data.forEach(r=>here[r.code]=r.metal);
   }
   const same=codes.filter(x=>here[x]===m),diff=codes.filter(x=>here[x]&&here[x]!==m);
@@ -553,7 +553,7 @@ $('mgo').onclick=async()=>{
   if(diff.length){
     const {data:nc,error:e2}=await sb.rpc('next_codes',{m:m,n:diff.length});
     if(e2||!nc||nc.length!==diff.length){
-      if(confirm('Naye code nahi mil paye (shayad SQL abhi nahi chali). Purana code rakhkar hi category badal dein?')){
+      if(confirm('Could not get new codes (the SQL may not have been run yet). Change the category and keep the old codes?')){
         for(let i=0;i<diff.length;i+=100){
           const ch=diff.slice(i,i+100);
           const {error}=await sb.from('designs').update({metal:m,category:c,name:c+' design'}).in('code',ch);
@@ -571,26 +571,26 @@ $('mgo').onclick=async()=>{
         }
       };
       await Promise.all([worker(),worker(),worker(),worker()]);
-      range=' Naye code: '+nc[0]+' se '+nc[nc.length-1]+'.';
+      range=' New codes: '+nc[0]+' to '+nc[nc.length-1]+'.';
     }
   }
   $('mgo').disabled=false;
-  if(bad){$('mmsg').textContent=bad+' designs nahi badal payi. Dobara koshish karein.';selUI();}
+  if(bad){$('mmsg').textContent=bad+' designs could not be moved. Please try again.';selUI();}
   else{$('mmsg').textContent='';$('movebox').hidden=true}
-  $('selMsg').textContent=done+' designs '+m+' - '+c+' mein bhej di gayi.'+range;
+  $('selMsg').textContent=done+' designs moved to '+m+' - '+c+'.'+range;
   await loadCats();if(cat!=='All'&&!CATS[metal].includes(cat))cat='All';go();loadDash();
 };
 
 // Admin
 function fillCats(){$('uc').innerHTML=CATS[$('um').value].map(c=>'<option>'+esc(c)+'</option>').join('')}
 $('um').onchange=fillCats;
-$('uf').onchange=()=>{const n=$('uf').files.length;$('fcount').textContent=n?n+' photos chuni gayi':'Koi photo nahi chuni'};
+$('uf').onchange=()=>{const n=$('uf').files.length;$('fcount').textContent=n?n+' photos selected':'No photos selected'};
 $('admBtn').onclick=()=>{const p=$('panel');p.style.display=p.style.display==='block'?'none':'block'};
 function setAdmin(on){admin=on;if(!on){selOn=false;sel.clear()}$('login').hidden=on;$('tools').hidden=!on;selUI();if(on)loadDash()}
 $('loginBtn').onclick=async()=>{
-  if(!ok){$('loginMsg').textContent='Pehle Supabase ki details bharein.';return}
+  if(!ok){$('loginMsg').textContent='Please add your Supabase details first.';return}
   const {error}=await sb.auth.signInWithPassword({email:$('em').value.trim(),password:$('pw').value});
-  $('loginMsg').textContent=error?'Email ya password galat hai.':'';
+  $('loginMsg').textContent=error?'Incorrect email or password.':'';
   if(!error)$('pw').value='';
 };
 $('logout').onclick=async()=>{
@@ -601,9 +601,9 @@ $('logout').onclick=async()=>{
 };
 $('saveRate').onclick=async()=>{
   const g=+$('ig').value,s=+$('is').value;
-  if(!g||!s){$('rateMsg').textContent='Dono bhav daalein.';return}
+  if(!g||!s){$('rateMsg').textContent='Enter both rates.';return}
   const {error}=await sb.from('rates').upsert({id:1,gold:g,silver:s,updated_at:new Date().toISOString()});
-  $('rateMsg').textContent=error?'Save nahi hua. Login dobara karein.':'Bhav save ho gaya.';
+  $('rateMsg').textContent=error?'Could not save. Please log in again.':'Rate saved.';
   if(!error)loadRates();
 };
 
@@ -617,9 +617,9 @@ async function shrink(f,max,qual){
 }
 $('upBtn').onclick=async()=>{
   const files=[...$('uf').files];
-  if(!files.length){$('upMsg').textContent='Pehle photos chunein.';return}
+  if(!files.length){$('upMsg').textContent='Select photos first.';return}
   const m=$('um').value;let c=$('nc').value.trim()||$('uc').value;
-  if(!c){$('upMsg').textContent='Category chunein ya naya naam likhein.';return}
+  if(!c){$('upMsg').textContent='Select a category or enter a new name.';return}
   const ex=CATS[m].find(x=>x.toLowerCase()===c.toLowerCase());if(ex)c=ex;
   $('upBtn').disabled=true;
   let i=0,done=0,bad=0;
@@ -638,13 +638,13 @@ $('upBtn').onclick=async()=>{
         bad++;
         if(code){await sb.storage.from('designs').remove(['full/'+code+'.jpg','thumb/'+code+'.jpg']);await sb.from('designs').delete().eq('code',code)}
       }
-      done++;$('upMsg').textContent='Upload ho raha hai: '+done+' / '+files.length+'. Page band na karein.';
+      done++;$('upMsg').textContent='Uploading: '+done+' / '+files.length+'. Do not close this page.';
     }
   };
   await Promise.all([worker(),worker(),worker()]);
   $('upBtn').disabled=false;
-  $('upMsg').textContent=(files.length-bad)+' photos '+m+' / '+c+' mein jod di gayi.'+(bad?' '+bad+' photos nahi chadh payi, unhe dobara upload karein.':'');
-  $('uf').value='';$('nc').value='';$('fcount').textContent='Koi photo nahi chuni';
+  $('upMsg').textContent=(files.length-bad)+' photos added to '+m+' / '+c+'.'+(bad?' '+bad+' photos failed to upload. Please upload them again.':'');
+  $('uf').value='';$('nc').value='';$('fcount').textContent='No photos selected';
   q='';$('q').value='';metal=m;cat=c;await loadCats();$('um').value=m;fillCats();$('uc').value=c;go();
 };
 
@@ -658,7 +658,7 @@ if(/^#[GS]\d+$/i.test(location.hash))showDesign(location.hash.slice(1).toUpperCa
 (function(){
   try{
     const base=new URL('./',location.href).href;
-    const m={name:'Shree Tirupati Jawellers',short_name:'Tirupati Jawellers',start_url:base,scope:base,display:'standalone',lang:'hi',background_color:'#4A1424',theme_color:'#4A1424',icons:[{src:base+'icon-192.png?v=2',sizes:'192x192',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'maskable'}]};
+    const m={name:'Shree Tirupati Jawellers',short_name:'Tirupati Jawellers',start_url:base,scope:base,display:'standalone',lang:'en',background_color:'#4A1424',theme_color:'#4A1424',icons:[{src:base+'icon-192.png?v=2',sizes:'192x192',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'maskable'}]};
     const l=document.createElement('link');l.rel='manifest';
     l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));
     document.head.appendChild(l);
