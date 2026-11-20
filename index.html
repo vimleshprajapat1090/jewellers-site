@@ -24,7 +24,7 @@ h1{font:400 24px/1.1 Marcellus,Georgia,serif;margin:0}
 .rate b{font:400 26px/1.2 Marcellus,Georgia,serif}
 .rate.s b{color:#D5DADF}.rate.g b{color:#E8C56E}
 .asof{max-width:1000px;margin:8px auto 0;font-size:13px;color:#E3CF9E}
-main{max-width:1000px;margin:0 auto;padding:16px}
+main{max-width:1000px;margin:0 auto;padding:16px 16px 100px}
 #q{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surf);color:var(--ink);font:inherit;margin-bottom:12px}
 .tabs,.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}
 .tabs button{flex:1;padding:12px;border:2px solid var(--line);background:var(--surf);color:var(--ink);border-radius:10px;font:400 18px Marcellus,Georgia,serif;cursor:pointer}
@@ -82,10 +82,47 @@ main{max-width:1000px;margin:0 auto;padding:16px}
 .cb{display:inline-block;padding:8px 16px;border-radius:8px;background:var(--head);color:#F6E7C1;text-decoration:none;font-weight:500;font-size:14px}
 .cb.wa{background:#1B8A4B;color:#fff}
 .cb.big{display:block;text-align:center;margin:10px 0;padding:12px;font-size:16px}
+.fh{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+#fresh{margin-bottom:14px}
+#fresh[hidden]{display:none}
+#fresh h3{font:400 18px Marcellus,Georgia,serif;margin:0}
+.chipb{padding:6px 14px;border:1px solid var(--head);background:none;color:var(--ink);border-radius:20px;font:inherit;font-size:14px;cursor:pointer}
+.strip{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}
+.si{flex:0 0 112px;cursor:pointer}
+.si img{width:112px;height:112px;object-fit:cover;border-radius:10px;border:1px solid var(--line);display:block;background:var(--surf)}
+.si b{display:block;font-size:13px;margin-top:4px}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+.rate b{background:linear-gradient(100deg,currentColor 40%,rgba(255,255,255,.95) 50%,currentColor 60%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shine 4s linear infinite}
+}
+@keyframes shine{0%{background-position:150% 0}100%{background-position:-50% 0}}
+@media (prefers-reduced-motion:reduce){.rate b{animation:none}}
+#splash{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at 50% 40%,#6A1D33,#2E0A15);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;animation:splashOut .6s ease 2.2s forwards}
+#splash img{width:150px;height:150px;border-radius:30px;box-shadow:0 0 40px rgba(232,197,110,.45);animation:pop .9s ease both}
+#splash p{font:400 26px Marcellus,Georgia,serif;color:#E8C56E;margin:0;text-align:center;animation:pop 1s ease .3s both}
+#splash i{display:block;width:150px;height:3px;background:linear-gradient(90deg,transparent,#E8C56E,transparent);background-size:200% 100%;animation:sweep 1.4s linear infinite}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes sweep{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes splashOut{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){#splash{display:none}}
+#fab{position:fixed;right:14px;bottom:14px;z-index:80;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+#fabm{display:flex;flex-direction:column;gap:8px}
+#fabm[hidden]{display:none}
+#fabm a{box-shadow:0 4px 14px rgba(0,0,0,.35)}
+#fabb{background:#1B8A4B;color:#fff;border:0;border-radius:28px;padding:12px 18px;font:inherit;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.35);cursor:pointer}
+.nv{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:64px;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:34px;border-radius:10px;cursor:pointer;z-index:3}
+.nv.l{left:6px}.nv.r{right:6px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg)}
+.stat b{display:block;font:400 28px Marcellus,Georgia,serif;color:var(--ink)}
+.stat span{font-size:13px;color:var(--mute)}
+.dh{margin:12px 0 4px;color:var(--mute);font-size:14px}
+.crow{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink)}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 </style>
 </head>
 <body>
+<div id="splash"><img src="icon-512.png?v=2" alt=""><p>Shree Tirupati Jawellers</p><i></i></div>
+<script>try{if(sessionStorage.getItem('stj_splash'))document.getElementById('splash').style.display='none';else sessionStorage.setItem('stj_splash','1')}catch(e){}</script>
 <header>
   <div class="top"><h1>Shree Tirupati Jawellers</h1><div class="hb"><button class="adm" id="ctBtn">Sampark</button><button class="adm" id="wlBtn">♡ Pasand (0)</button><button class="adm" id="admBtn">Admin</button></div></div>
   <div class="rates">
@@ -106,6 +143,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     <p><button class="btn" id="loginBtn">Login</button> <span class="msg" id="loginMsg"></span></p>
   </div>
   <div id="tools" hidden>
+    <h2>Dashboard</h2>
+    <div id="dash"></div>
+    <p><button class="btn" id="dashBtn">Ginti dobara dekhein</button></p>
     <h2>Aaj ka bhav update karein</h2>
     <div class="row">
       <label>Gold (10 gram, ₹)<input id="ig" inputmode="numeric"></label>
@@ -125,6 +165,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 </div></section>
 
 <main>
+  <div id="fresh" hidden><div class="fh"><h3>Nayi aayi designs</h3><button class="chipb" id="rnd">Koi bhi design dikhao</button></div><div class="strip" id="strip"></div></div>
   <input id="q" type="search" placeholder="Design ka code likhein (jaise G1001)" aria-label="Design code search">
   <div class="tabs" id="tabs"></div>
   <div class="chips" id="chips"></div>
@@ -141,8 +182,9 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 </main>
 
 <div id="lb" hidden>
-  <div class="lbt"><button id="lbh">♡ Pasand karein</button><button id="lbs">Share karein</button><button id="del" hidden>Ye design hatayein</button><button id="lbx">Band karein</button></div>
+  <div class="lbt"><button id="lbh">♡ Pasand karein</button><button id="lbs">Share karein</button><button id="lbq">WhatsApp par poochein</button><button id="del" hidden>Ye design hatayein</button><button id="lbx">Band karein</button></div>
   <div id="lbw"></div>
+  <button class="nv l" id="nvl" aria-label="Pichli design">&#8249;</button><button class="nv r" id="nvr" aria-label="Agli design">&#8250;</button>
   <p id="lbc"></p>
 </div>
 
@@ -154,6 +196,8 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   <div class="lbt"><button id="wlx">Band karein</button></div>
   <div id="wlb"></div>
 </div>
+
+<div id="fab"><div id="fabm" hidden><a class="cb wa" id="fa0" target="_blank" rel="noopener"></a><a class="cb wa" id="fa1" target="_blank" rel="noopener"></a></div><button id="fabb">WhatsApp</button></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
@@ -179,6 +223,7 @@ async function loadCats(){
   CATS={Gold:[],Silver:[]};
   (data||[]).forEach(r=>{if(CATS[r.metal])CATS[r.metal].push(r.category)});
   for(const m in CATS)CATS[m].sort();
+  loadFresh();
   drawTabs();fillCats();
 }
 async function loadRates(){
@@ -287,6 +332,84 @@ function showDesign(code){
   $('del').hidden=!admin;heartUI();openLb();
 }
 
+// Nayi aayi designs, random design, aur design ke baare mein WhatsApp par poochna
+async function loadFresh(){
+  if(!ok)return;
+  const {data}=await sb.from('designs').select('code').order('id',{ascending:false}).range(0,11);
+  $('fresh').hidden=!(data&&data.length);
+  $('strip').innerHTML=(data||[]).map(x=>'<div class="si" data-f="'+esc(x.code)+'"><img loading="lazy" alt="'+esc(x.code)+'" src="'+pub('thumb',x.code)+'"><b>'+esc(x.code)+'</b></div>').join('');
+}
+$('strip').onclick=e=>{const k=e.target.closest('[data-f]');if(k)showDesign(k.dataset.f)};
+$('rnd').onclick=async()=>{
+  const {count}=await sb.from('designs').select('code',{count:'exact',head:true});
+  if(!count)return;
+  const i=Math.floor(Math.random()*count);
+  const {data}=await sb.from('designs').select('code').order('id').range(i,i);
+  if(data&&data[0])showDesign(data[0].code);
+};
+$('lbq').onclick=()=>{
+  if(!cur)return;
+  shr=Date.now();
+  const url=location.origin+location.pathname.replace(/index\.html$/,'')+'#'+cur;
+  window.open(wa(SHOP.owners[0].phone,'Namaste, mujhe design '+cur+' ke baare mein jaanna hai.\n'+url),'_blank');
+};
+
+// Floating WhatsApp button
+function fabLinks(){
+  const code=(lbOpen&&cur)?cur:null;
+  const base=location.origin+location.pathname.replace(/index\.html$/,'');
+  const msg=code?'Namaste, mujhe design '+code+' ke baare mein jaanna hai.\n'+base+'#'+code:'Namaste, mujhe Shree Tirupati Jawellers ke baare mein jaanna hai.';
+  SHOP.owners.forEach((o,i)=>{const a=$('fa'+i);if(!a)return;a.textContent='Pro. '+o.name;a.href=wa(o.phone,msg)});
+}
+$('fabb').onclick=()=>{const m=$('fabm');if(m.hidden)fabLinks();m.hidden=!m.hidden};
+$('fabm').onclick=e=>{if(e.target.closest('a')){shr=Date.now();$('fabm').hidden=true}};
+
+// Swipe se agli ya pichli design
+const navCodes=()=>{
+  let l=[...document.querySelectorAll('#grid .card')].map(k=>k.dataset.code);
+  if(!l.includes(cur))l=[...document.querySelectorAll('#strip [data-f]')].map(k=>k.dataset.f);
+  return l.includes(cur)?l:[];
+};
+function navUI(){const n=navCodes().length>1;$('nvl').style.display=$('nvr').style.display=n?'':'none'}
+async function stepDesign(d){
+  let codes=navCodes();const i=codes.indexOf(cur);if(i<0)return;
+  const j=i+d;
+  if(j>=codes.length&&$('more').style.display==='block'){shown+=24;await loadGrid();codes=navCodes()}
+  if(j<0||j>=codes.length)return;
+  showDesign(codes[j]);
+}
+$('nvl').onclick=()=>stepDesign(-1);$('nvr').onclick=()=>stepDesign(1);
+let tx=null,ty=0;
+$('lbw').addEventListener('touchstart',e=>{if(e.touches.length===1){tx=e.touches[0].clientX;ty=e.touches[0].clientY}else tx=null},{passive:true});
+$('lbw').addEventListener('touchend',e=>{
+  if(tx===null)return;
+  const t=e.changedTouches[0],dx=t.clientX-tx,dy=t.clientY-ty;tx=null;
+  const im=$('lbw').querySelector('img');
+  if(im&&im.classList.contains('z'))return;
+  if(Math.abs(dx)>60&&Math.abs(dx)>1.5*Math.abs(dy))stepDesign(dx<0?1:-1);
+},{passive:true});
+document.addEventListener('keydown',e=>{if(!lbOpen)return;if(e.key==='ArrowRight')stepDesign(1);if(e.key==='ArrowLeft')stepDesign(-1)});
+
+// Admin dashboard (sirf gintiyan)
+async function cnt(f){const {count}=await f(sb.from('designs').select('id',{count:'exact',head:true}));return count||0}
+async function loadDash(){
+  if(!ok||!admin)return;
+  $('dash').textContent='Ginti ho rahi hai...';
+  try{
+    if(!CATS.Gold.length&&!CATS.Silver.length)await loadCats();
+    const wk=new Date(Date.now()-7*864e5).toISOString();
+    const [t,g,sv,n]=await Promise.all([cnt(f=>f),cnt(f=>f.eq('metal','Gold')),cnt(f=>f.eq('metal','Silver')),cnt(f=>f.gte('created_at',wk))]);
+    const rows=[];
+    for(const m of ['Gold','Silver'])for(const c of CATS[m])rows.push({m,c,n:0});
+    const counts=await Promise.all(rows.map(r=>cnt(f=>f.eq('metal',r.m).eq('category',r.c))));
+    rows.forEach((r,i)=>r.n=counts[i]);rows.sort((a,b)=>b.n-a.n);
+    $('dash').innerHTML='<div class="stats"><div class="stat"><b>'+t+'</b><span>Kul designs</span></div><div class="stat"><b>'+n+'</b><span>Pichle 7 din mein nayi</span></div><div class="stat"><b>'+g+'</b><span>Gold ki photos</span></div><div class="stat"><b>'+sv+'</b><span>Silver ki photos</span></div></div>'+
+      (rows.length?'<p class="dh">Category ke hisaab se</p>'+rows.map(r=>'<div class="crow"><span>'+esc(r.m)+' - '+esc(r.c)+'</span><b>'+r.n+'</b></div>').join(''):'');
+  }catch(e){$('dash').textContent='Ginti nahi aa payi. Dobara koshish karein.'}
+}
+$('dashBtn').onclick=loadDash;
+$('splash').onclick=()=>{$('splash').style.display='none'};
+
 // Pasand ki list (customer ke phone mein hi save hoti hai)
 let wish=[];try{wish=JSON.parse(localStorage.getItem('stj_wish')||'[]')}catch(e){}
 const saveW=()=>{try{localStorage.setItem('stj_wish',JSON.stringify(wish))}catch(e){}};
@@ -314,7 +437,7 @@ $('wlb').onclick=e=>{const r=e.target.closest('[data-r]');if(r){toggleW(r.datase
 
 // Bada photo aur zoom
 let lbOpen=false;
-function openLb(){$('lb').hidden=false;if(!lbOpen){try{history.pushState({lb:1},'');lbOpen=true}catch(e){}}}
+function openLb(){$('lb').hidden=false;navUI();if(!lbOpen){try{history.pushState({lb:1},'');lbOpen=true}catch(e){}}}
 function closeLb(){if(lbOpen)history.back();else $('lb').hidden=true}
 window.addEventListener('popstate',()=>{if(lbOpen){lbOpen=false;$('lb').hidden=true}});
 $('grid').onclick=e=>{
@@ -382,7 +505,7 @@ function fillCats(){$('uc').innerHTML=CATS[$('um').value].map(c=>'<option>'+esc(
 $('um').onchange=fillCats;
 $('uf').onchange=()=>{const n=$('uf').files.length;$('fcount').textContent=n?n+' photos chuni gayi':'Koi photo nahi chuni'};
 $('admBtn').onclick=()=>{const p=$('panel');p.style.display=p.style.display==='block'?'none':'block'};
-function setAdmin(on){admin=on;if(!on){selOn=false;sel.clear()}$('login').hidden=on;$('tools').hidden=!on;selUI()}
+function setAdmin(on){admin=on;if(!on){selOn=false;sel.clear()}$('login').hidden=on;$('tools').hidden=!on;selUI();if(on)loadDash()}
 $('loginBtn').onclick=async()=>{
   if(!ok){$('loginMsg').textContent='Pehle Supabase ki details bharein.';return}
   const {error}=await sb.auth.signInWithPassword({email:$('em').value.trim(),password:$('pw').value});
@@ -454,7 +577,7 @@ if(/^#[GS]\d+$/i.test(location.hash))showDesign(location.hash.slice(1).toUpperCa
 (function(){
   try{
     const base=new URL('./',location.href).href;
-    const m={name:'Shree Tirupati Jawellers',short_name:'Tirupati jewellers',start_url:base,scope:base,display:'standalone',lang:'hi',background_color:'#4A1424',theme_color:'#4A1424',icons:[{src:base+'icon-192.png?v=2',sizes:'192x192',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'maskable'}]};
+    const m={name:'Shree Tirupati Jawellers',short_name:'Tirupati Jawellers',start_url:base,scope:base,display:'standalone',lang:'hi',background_color:'#4A1424',theme_color:'#4A1424',icons:[{src:base+'icon-192.png?v=2',sizes:'192x192',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'any'},{src:base+'icon-512.png?v=2',sizes:'512x512',type:'image/png',purpose:'maskable'}]};
     const l=document.createElement('link');l.rel='manifest';
     l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));
     document.head.appendChild(l);
